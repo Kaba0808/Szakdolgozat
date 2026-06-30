@@ -6,19 +6,17 @@
  *   - 16 byte plaintext (1 blokk)
  *   - 128-bites kulcs
  *   - BENCH_ITERATIONS ismetles
- *   - DWT cikluszamolo a meres eszkőze
+ *   - DWT cikluszamolo a meres eszkoze
  *
  * Mert mutatók:
  *   - Kulcsgenerálás (key schedule) ciklusa — egyszer
  *   - Titkositas: min/max/avg ciklus
- *   - Visszafejtés: min/max/avg ciklus
+ *   - Visszafejtes: min/max/avg ciklus
  */
 
 #include "benchmark.h"
 #include "dwt_timer.h"
 
-/* Algoritmus headerek — eleresi ut a CubeIDE projektben allithato be
- * (Project Properties → C/C++ Build → Settings → Include Paths) */
 #include "../algorithms/aes/aes.h"
 #include "../algorithms/speck/speck.h"
 #include "../algorithms/lea/lea.h"
@@ -60,6 +58,7 @@ static const uint8_t TEST_NONCE[16] = {
 
 /* -----------------------------------------------------------------------
  * AES-128 benchmark (tiny-AES-c)
+ * API: AES_init_ctx(), AES_ECB_encrypt(), AES_ECB_decrypt()
  * ----------------------------------------------------------------------- */
 bench_result_t benchmark_aes(void) {
     bench_result_t r = { .name = "AES-128" };
@@ -78,13 +77,11 @@ bench_result_t benchmark_aes(void) {
     for (i = 0; i < BENCH_ITERATIONS; i++) {
         memcpy(buf, TEST_PT, 16);
 
-        /* Titkosítás */
         t = dwt_get();
         AES_ECB_encrypt(&ctx, buf);
         t = dwt_elapsed(t);
         UPDATE_STATS(t, r.enc_min, r.enc_max, enc_sum);
 
-        /* Visszafejtés */
         t = dwt_get();
         AES_ECB_decrypt(&ctx, buf);
         t = dwt_elapsed(t);
@@ -98,33 +95,36 @@ bench_result_t benchmark_aes(void) {
 
 /* -----------------------------------------------------------------------
  * SPECK-128/128 benchmark
+ * API: speck128_encrypt(key, pt, ct), speck128_decrypt(key, ct, pt)
+ * A high-level API minden hivasban elvegzi a key schedule-t is.
+ * A keyschedule kulön merve a low-level Speck128128KeySchedule()-lel.
  * ----------------------------------------------------------------------- */
 bench_result_t benchmark_speck(void) {
     bench_result_t r = { .name = "SPECK-128/128" };
-    speck128_ctx_t ctx;
-    uint8_t pt[16], ct[16], dec[16];
+    uint8_t ct[16], dec[16];
     uint32_t t, i;
     uint32_t enc_sum = 0, dec_sum = 0;
     r.enc_min = UINT32_MAX; r.enc_max = 0;
     r.dec_min = UINT32_MAX; r.dec_max = 0;
 
-    /* Kulcsgenerálás mérése */
-    t = dwt_get();
-    speck128_init(&ctx, TEST_KEY);
-    r.keyschedule = dwt_elapsed(t);
+    /* Kulcsgenerálás mérése (low-level API) */
+    {
+        u64 K[2];
+        u64 rk[SPECK128_ROUNDS];
+        BytesToWords64(TEST_KEY, K, 16);
+        t = dwt_get();
+        Speck128128KeySchedule(K, rk);
+        r.keyschedule = dwt_elapsed(t);
+    }
 
     for (i = 0; i < BENCH_ITERATIONS; i++) {
-        memcpy(pt, TEST_PT, 16);
-
-        /* Titkosítás */
         t = dwt_get();
-        speck128_encrypt(&ctx, pt, ct);
+        speck128_encrypt(TEST_KEY, TEST_PT, ct);
         t = dwt_elapsed(t);
         UPDATE_STATS(t, r.enc_min, r.enc_max, enc_sum);
 
-        /* Visszafejtés */
         t = dwt_get();
-        speck128_decrypt(&ctx, ct, dec);
+        speck128_decrypt(TEST_KEY, ct, dec);
         t = dwt_elapsed(t);
         UPDATE_STATS(t, r.dec_min, r.dec_max, dec_sum);
     }
@@ -136,10 +136,11 @@ bench_result_t benchmark_speck(void) {
 
 /* -----------------------------------------------------------------------
  * LEA-128 benchmark
+ * API: lea_set_key(), lea_ecb_enc(), lea_ecb_dec()
  * ----------------------------------------------------------------------- */
 bench_result_t benchmark_lea(void) {
     bench_result_t r = { .name = "LEA-128" };
-    LEAKEY ctx;
+    LEA_KEY ctx;
     uint8_t ct[16], dec[16];
     uint32_t t, i;
     uint32_t enc_sum = 0, dec_sum = 0;
@@ -148,19 +149,17 @@ bench_result_t benchmark_lea(void) {
 
     /* Kulcsgenerálás mérése */
     t = dwt_get();
-    leasetkey(&ctx, TEST_KEY, 16);  /* 16 byte = 128-bites kulcs */
+    lea_set_key(&ctx, TEST_KEY, 16);
     r.keyschedule = dwt_elapsed(t);
 
     for (i = 0; i < BENCH_ITERATIONS; i++) {
-        /* Titkosítás */
         t = dwt_get();
-        leaencrypt(ct, TEST_PT, &ctx);
+        lea_ecb_enc(ct, TEST_PT, 16, &ctx);
         t = dwt_elapsed(t);
         UPDATE_STATS(t, r.enc_min, r.enc_max, enc_sum);
 
-        /* Visszafejtés */
         t = dwt_get();
-        leadecrypt(dec, ct, &ctx);
+        lea_ecb_dec(dec, ct, 16, &ctx);
         t = dwt_elapsed(t);
         UPDATE_STATS(t, r.dec_min, r.dec_max, dec_sum);
     }
@@ -172,12 +171,11 @@ bench_result_t benchmark_lea(void) {
 
 /* -----------------------------------------------------------------------
  * ASCON-128a benchmark
- * ASCON AEAD: nincs különálló key schedule — az init a permutácio reszeként
- * fut minden híváskor. A "keyschedule" mezőt 0-ra állítjuk.
+ * API: crypto_aead_encrypt(), crypto_aead_decrypt()
+ * Nincs kulön key schedule — az init minden hivasban a permutacio resze.
  * ----------------------------------------------------------------------- */
 bench_result_t benchmark_ascon(void) {
     bench_result_t r = { .name = "ASCON-128a" };
-    /* ASCON-128a: ct = pt + 16 byte tag */
     uint8_t ct[16 + CRYPTO_ABYTES];
     uint8_t dec[16];
     unsigned long long clen, mlen;
@@ -185,29 +183,27 @@ bench_result_t benchmark_ascon(void) {
     uint32_t enc_sum = 0, dec_sum = 0;
     r.enc_min = UINT32_MAX; r.enc_max = 0;
     r.dec_min = UINT32_MAX; r.dec_max = 0;
-    r.keyschedule = 0;  /* ASCON-ban nincs elokeszitett key schedule */
+    r.keyschedule = 0;
 
     for (i = 0; i < BENCH_ITERATIONS; i++) {
-        /* Titkosítás */
         t = dwt_get();
         crypto_aead_encrypt(
             ct, &clen,
-            TEST_PT, 16,    /* plaintext, 16 byte */
-            NULL, 0,        /* associated data: ures */
-            NULL,           /* nsec: unused */
-            TEST_NONCE,     /* nonce */
-            TEST_KEY        /* key */
+            TEST_PT, 16,
+            NULL, 0,
+            NULL,
+            TEST_NONCE,
+            TEST_KEY
         );
         t = dwt_elapsed(t);
         UPDATE_STATS(t, r.enc_min, r.enc_max, enc_sum);
 
-        /* Visszafejtés */
         t = dwt_get();
         crypto_aead_decrypt(
             dec, &mlen,
-            NULL,           /* nsec: unused */
-            ct, clen,       /* ciphertext + tag */
-            NULL, 0,        /* associated data: ures */
+            NULL,
+            ct, clen,
+            NULL, 0,
             TEST_NONCE,
             TEST_KEY
         );
@@ -259,7 +255,6 @@ void benchmark_print_results(const bench_result_t* results, uint8_t count) {
                (unsigned long)r->dec_min,
                (unsigned long)r->dec_avg,
                (unsigned long)r->dec_max);
-        /* cycles/byte: 16 byte-os blokkon */
         printf("  Titkositas:      %.2f ciklus/byte\r\n",
                (float)r->enc_avg / 16.0f);
         printf("  Visszafejtes:    %.2f ciklus/byte\r\n\r\n",
