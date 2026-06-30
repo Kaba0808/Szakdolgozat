@@ -22,8 +22,8 @@
 #include "../algorithms/aes/aes.h"
 #include "../algorithms/speck/speck.h"
 #include "../algorithms/lea/lea.h"
-#include "../algorithms/ascon/crypto_aead.h"
 #include "../algorithms/ascon/api.h"
+#include "../algorithms/ascon/ascon.h"
 
 #include <string.h>
 #include <stdio.h>
