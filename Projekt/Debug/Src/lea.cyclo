@@ -1,0 +1,10 @@
+../Src/lea.c:3:17:rol32	1
+../Src/lea.c:7:17:ror32	1
+../Src/lea.c:11:17:load32_le	1
+../Src/lea.c:18:13:store32_le	1
+../Src/lea.c:30:17:delta_word	1
+../Src/lea.c:34:6:lea_set_key	11
+../Src/lea.c:130:6:lea_encrypt	10
+../Src/lea.c:176:6:lea_decrypt	10
+../Src/lea.c:222:6:lea_ecb_encrypt	6
+../Src/lea.c:235:6:lea_ecb_decrypt	6

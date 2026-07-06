@@ -1,0 +1,9 @@
+../Src/ascon128.h:33:24:LOADBYTES	2
+../Src/ascon128.h:42:20:STOREBYTES	2
+../Src/ascon128.h:49:24:CLEARBYTES	2
+../Src/ascon128.h:57:24:ROR64	1
+../Src/ascon128.h:61:20:ROUND	1
+../Src/ascon128.h:88:20:P12	1
+../Src/ascon128.h:103:20:P6	1
+../Src/ascon128.c:3:5:ascon128_aead_encrypt	3
+../Src/ascon128.c:64:5:ascon128_aead_decrypt	6
