@@ -1,10 +1,18 @@
+/**
+  ******************************************************************************
+  * @file           : ascon128.c
+  * @brief          : ASCON-128 AEAD - standardized types for ARM Cortex-M4
+  ******************************************************************************
+  */
 #include "ascon128.h"
+#include <stdint.h>
+#include <string.h>
 
-int ascon128_aead_encrypt(unsigned char *c, unsigned long long *clen,
-                          const unsigned char *m, unsigned long long mlen,
-                          const unsigned char *ad, unsigned long long adlen,
-                          const unsigned char *nsec, const unsigned char *npub,
-                          const unsigned char *k) {
+int ascon128_aead_encrypt(uint8_t *c, unsigned long long *clen,
+                          const uint8_t *m, unsigned long long mlen,
+                          const uint8_t *ad, unsigned long long adlen,
+                          const uint8_t *nsec, const uint8_t *npub,
+                          const uint8_t *k) {
     const uint64_t K0 = LOADBYTES(k, 8);
     const uint64_t K1 = LOADBYTES(k + 8, 8);
     const uint64_t N0 = LOADBYTES(npub, 8);
@@ -61,21 +69,21 @@ int ascon128_aead_encrypt(unsigned char *c, unsigned long long *clen,
     return 0;
 }
 
-int ascon128_aead_decrypt(unsigned char *m, unsigned long long *mlen,
-                          unsigned char *nsec, const unsigned char *c,
-                          unsigned long long clen, const unsigned char *ad,
-                          unsigned long long adlen, const unsigned char *npub,
-                          const unsigned char *k) {
+int ascon128_aead_decrypt(uint8_t *m, unsigned long long *mlen,
+                          uint8_t *nsec, const uint8_t *c,
+                          unsigned long long clen, const uint8_t *ad,
+                          unsigned long long adlen, const uint8_t *npub,
+                          const uint8_t *k) {
     const uint64_t K0 = LOADBYTES(k, 8);
     const uint64_t K1 = LOADBYTES(k + 8, 8);
     const uint64_t N0 = LOADBYTES(npub, 8);
     const uint64_t N1 = LOADBYTES(npub + 8, 8);
-    const unsigned char *tag;
+    const uint8_t *tag;
     unsigned long long remaining;
     ascon_state_t s;
     int i;
     int diff = 0;
-    unsigned char t[ASCON128_ABYTES];
+    uint8_t t[ASCON128_ABYTES];
 
     (void)nsec;
 

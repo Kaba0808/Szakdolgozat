@@ -1,0 +1,19 @@
+# 1. Megkeressük az arm-none-eabi-size.exe fájlt automatikusan a gépen
+$sizePath = (Get-ChildItem -Path "C:\ST" -Filter "arm-none-eabi-size.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1).FullName
+
+if (-not $sizePath) {
+    $sizePath = (Get-ChildItem -Path "C:\Program Files" -Filter "arm-none-eabi-size.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1).FullName
+}
+
+# 2. Ha megvan, lefuttatjuk mind a 4 fájlra (amik a Debug/Src mappában vannak)
+if ($sizePath) {
+    Write-Host "Megvan az eszköz itt: $sizePath`n" -ForegroundColor Green
+    Write-Host "--- ALGORITMUSOK MERETEI (FLASH ÉS RAM) ---" -ForegroundColor Cyan
+    & $sizePath Debug/Src/aes.o
+    & $sizePath Debug/Src/speck.o
+    & $sizePath Debug/Src/lea.o
+    & $sizePath Debug/Src/ascon128.o
+    Write-Host "--------------------------------------------" -ForegroundColor Cyan
+} else {
+    Write-Host "Sajnos nem találom az arm-none-eabi-size.exe-t a C:\ST vagy C:\Program Files mappákban!" -ForegroundColor Red
+}

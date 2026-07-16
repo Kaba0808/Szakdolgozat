@@ -5,5 +5,5 @@
 ../Src/ascon128.h:61:20:ROUND	1
 ../Src/ascon128.h:88:20:P12	1
 ../Src/ascon128.h:103:20:P6	1
-../Src/ascon128.c:3:5:ascon128_aead_encrypt	3
-../Src/ascon128.c:64:5:ascon128_aead_decrypt	6
+../Src/ascon128.c:11:5:ascon128_aead_encrypt	3
+../Src/ascon128.c:72:5:ascon128_aead_decrypt	6

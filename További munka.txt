@@ -1,0 +1,4 @@
+- 1000 iterations
+- minden algoritmus és vizsgálati szempont jobban elcsoportositasa a mereskor egymástól, strukturaltabban
+- megnezni a fontosabb mérési szándékokat
+- RAM memória méretének vizsgálata, fordító program mutatja majd meg

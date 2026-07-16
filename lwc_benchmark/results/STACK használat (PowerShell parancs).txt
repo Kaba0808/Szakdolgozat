@@ -1,0 +1,38 @@
+# 1. Automatikusan megkeressük az összes .su fájlt a projekt könyvtárában
+$suFiles = Get-ChildItem -Path . -Filter "*.su" -Recurse -ErrorAction SilentlyContinue
+
+if ($suFiles.Count -eq 0) {
+    Write-Host "Nem találtam .su fájlokat! Biztosan lefordítottad a kódot?" -ForegroundColor Red
+    return
+}
+
+Write-Host "`n============================================================" -ForegroundColor Cyan
+Write-Host "      DINAMIKUS MEMÓRIAHASZNÁLAT (STACK / VEREMTÁR)         " -ForegroundColor Cyan
+Write-Host "============================================================" -ForegroundColor Cyan
+$formatStr = "| {0,-12} | {1,-28} | {2,11} |"
+Write-Host ($formatStr -f "Algoritmus", "Függvény neve", "Stack (Bájt)") -ForegroundColor Yellow
+Write-Host "------------------------------------------------------------" -ForegroundColor Cyan
+
+foreach ($file in $suFiles) {
+    # Csak az aes, speck, lea és ascon fájlokat vizsgáljuk
+    if ($file.Name -match "aes|speck|lea|ascon") {
+        $algo = $file.BaseName.ToUpper()
+        $lines = Get-Content $file.FullName
+        foreach ($line in $lines) {
+            # GCC .su formátum: file.c:line:col:függvénynév   méret   típus
+            if ($line -match "^.+?:\d+:\d+:(?<Func>[^\s]+)\s+(?<Size>\d+)") {
+                $func = $Matches['Func']
+                $size = $Matches['Size']
+                
+                # Zölddel kiemeljük a főbb kriptográfiai függvényeket
+                if ($func -match "encrypt|decrypt|Cipher|KeySchedule|set_key|init") {
+                    Write-Host ($formatStr -f $algo, $func, "$size B") -ForegroundColor Green
+                } else {
+                    Write-Host ($formatStr -f $algo, $func, "$size B")
+                }
+            }
+        }
+    }
+}
+Write-Host "============================================================" -ForegroundColor Cyan
+Write-Host "💡 Tipp: A zölddel kiemelt függvények a kriptográfiai főműveletek." -ForegroundColor Green

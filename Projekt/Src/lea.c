@@ -1,25 +1,29 @@
+/**
+  ******************************************************************************
+  * @file           : lea.c
+  * @brief          : LEA-128 - standardized types and optimized memory loads
+  ******************************************************************************
+  */
 #include "lea.h"
+#include <stdint.h>
+#include <string.h>
 
-static uint32_t rol32(uint32_t x, unsigned int n) {
+static inline uint32_t rol32(uint32_t x, unsigned int n) {
     return (x << n) | (x >> (32U - n));
 }
 
-static uint32_t ror32(uint32_t x, unsigned int n) {
+static inline uint32_t ror32(uint32_t x, unsigned int n) {
     return (x >> n) | (x << (32U - n));
 }
 
-static uint32_t load32_le(const unsigned char *src) {
-    return ((uint32_t)src[0]) |
-           ((uint32_t)src[1] << 8) |
-           ((uint32_t)src[2] << 16) |
-           ((uint32_t)src[3] << 24);
+static inline uint32_t load32_le(const uint8_t *src) {
+    uint32_t val;
+    memcpy(&val, src, 4);
+    return val;
 }
 
-static void store32_le(unsigned char *dst, uint32_t x) {
-    dst[0] = (unsigned char)(x);
-    dst[1] = (unsigned char)(x >> 8);
-    dst[2] = (unsigned char)(x >> 16);
-    dst[3] = (unsigned char)(x >> 24);
+static inline void store32_le(uint8_t *dst, uint32_t x) {
+    memcpy(dst, &x, 4);
 }
 
 static const uint32_t delta_seed[8] = {
@@ -31,11 +35,11 @@ static uint32_t delta_word(unsigned int row, unsigned int idx) {
     return rol32(delta_seed[row & 7U], idx & 31U);
 }
 
-void lea_set_key(LEA_KEY *key, const unsigned char *mk, unsigned int mk_len) {
+void lea_set_key(LEA_KEY *key, const uint8_t *mk, unsigned int mk_len) {
     uint32_t t[8];
     unsigned int i;
 
-    if (key == 0 || mk == 0) {
+    if (key == NULL || mk == NULL) {
         return;
     }
 
@@ -127,12 +131,12 @@ void lea_set_key(LEA_KEY *key, const unsigned char *mk, unsigned int mk_len) {
     }
 }
 
-void lea_encrypt(unsigned char *ct, const unsigned char *pt, const LEA_KEY *key) {
+void lea_encrypt(uint8_t *ct, const uint8_t *pt, const LEA_KEY *key) {
     uint32_t x0, x1, x2, x3;
     unsigned int r;
     const uint32_t *rk;
 
-    if (ct == 0 || pt == 0 || key == 0 || key->rounds == 0U) {
+    if (ct == NULL || pt == NULL || key == NULL || key->rounds == 0U) {
         return;
     }
 
@@ -173,12 +177,12 @@ void lea_encrypt(unsigned char *ct, const unsigned char *pt, const LEA_KEY *key)
     store32_le(ct + 12, x3);
 }
 
-void lea_decrypt(unsigned char *pt, const unsigned char *ct, const LEA_KEY *key) {
+void lea_decrypt(uint8_t *pt, const uint8_t *ct, const LEA_KEY *key) {
     uint32_t x0, x1, x2, x3;
     int r;
     const uint32_t *rk;
 
-    if (pt == 0 || ct == 0 || key == 0 || key->rounds == 0U) {
+    if (pt == NULL || ct == NULL || key == NULL || key->rounds == 0U) {
         return;
     }
 
@@ -219,9 +223,9 @@ void lea_decrypt(unsigned char *pt, const unsigned char *ct, const LEA_KEY *key)
     store32_le(pt + 12, x3);
 }
 
-void lea_ecb_encrypt(unsigned char *ct, const unsigned char *pt, unsigned int len, const LEA_KEY *key) {
+void lea_ecb_encrypt(uint8_t *ct, const uint8_t *pt, unsigned int len, const LEA_KEY *key) {
     unsigned int i;
-    if (ct == 0 || pt == 0 || key == 0) {
+    if (ct == NULL || pt == NULL || key == NULL) {
         return;
     }
     if ((len & (LEA_BLOCK_SIZE - 1U)) != 0U) {
@@ -232,9 +236,9 @@ void lea_ecb_encrypt(unsigned char *ct, const unsigned char *pt, unsigned int le
     }
 }
 
-void lea_ecb_decrypt(unsigned char *pt, const unsigned char *ct, unsigned int len, const LEA_KEY *key) {
+void lea_ecb_decrypt(uint8_t *pt, const uint8_t *ct, unsigned int len, const LEA_KEY *key) {
     unsigned int i;
-    if (pt == 0 || ct == 0 || key == 0) {
+    if (pt == NULL || ct == NULL || key == NULL) {
         return;
     }
     if ((len & (LEA_BLOCK_SIZE - 1U)) != 0U) {

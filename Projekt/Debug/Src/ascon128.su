@@ -5,5 +5,5 @@
 ../Src/ascon128.h:61:20:ROUND	328	static
 ../Src/ascon128.h:88:20:P12	16	static
 ../Src/ascon128.h:103:20:P6	16	static
-../Src/ascon128.c:3:5:ascon128_aead_encrypt	248	static
-../Src/ascon128.c:64:5:ascon128_aead_decrypt	320	static
+../Src/ascon128.c:11:5:ascon128_aead_encrypt	248	static
+../Src/ascon128.c:72:5:ascon128_aead_decrypt	320	static
