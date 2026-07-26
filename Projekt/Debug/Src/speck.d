@@ -1,2 +1,2 @@
-Src/speck.o: ../Src/speck.c ../Src/speck.h
-../Src/speck.h:
+Src/speck.o: ../Src/speck.c ../Inc/speck.h
+../Inc/speck.h:

@@ -60,6 +60,8 @@ uint32_t result_count = 0;
 const uint16_t test_sizes[NUM_TEST_SIZES] = {16, 64, 256, 1024};
 
 uint8_t key[16] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF, 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
+uint8_t iv[16]  = {0xF0, 0xE0, 0xD0, 0xC0, 0xB0, 0xA0, 0x90, 0x80, 0x70, 0x60, 0x50, 0x40, 0x30, 0x20, 0x10, 0x00};
+
 uint8_t plaintext[1040];
 volatile uint8_t ciphertext[1040];
 volatile uint8_t decrypted[1040];
@@ -211,7 +213,7 @@ int main(void)
   {
       uint16_t size = test_sizes[s];
 
-      // --- AES-128 ---
+      // --- AES-128 ECB ---
       memcpy((void*)ciphertext, plaintext, size);
 
       __disable_irq();
@@ -231,6 +233,29 @@ int main(void)
       end = DWT_CYCCNT;
       __enable_irq();
       Record_Result("AES-128", "Decrypt", size, (end - start)/ITERATIONS);
+
+      // --- AES-128 CTR (Kiegészítő szimmetrikus mérés) ---
+      AES_init_ctx_iv(&aes_ctx, key, iv);
+      memcpy((void*)ciphertext, plaintext, size);
+
+      __disable_irq();
+      start = DWT_CYCCNT;
+      for(int k=0; k<ITERATIONS; k++) {
+          AES_CTR_xcrypt_buffer(&aes_ctx, (uint8_t*)ciphertext, size);
+      }
+      end = DWT_CYCCNT;
+      __enable_irq();
+      Record_Result("AES-CTR", "Encrypt", size, (end - start)/ITERATIONS);
+
+      AES_init_ctx_iv(&aes_ctx, key, iv);
+      __disable_irq();
+      start = DWT_CYCCNT;
+      for(int k=0; k<ITERATIONS; k++) {
+          AES_CTR_xcrypt_buffer(&aes_ctx, (uint8_t*)ciphertext, size);
+      }
+      end = DWT_CYCCNT;
+      __enable_irq();
+      Record_Result("AES-CTR", "Decrypt", size, (end - start)/ITERATIONS);
 
       // --- SPECK-128 ---
       __disable_irq();
@@ -306,6 +331,10 @@ int main(void)
   /* USER CODE END 3 */
 }
 
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
@@ -345,6 +374,10 @@ void SystemClock_Config(void)
   }
 }
 
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
 void Error_Handler(void)
 {
   __disable_irq();
@@ -352,3 +385,9 @@ void Error_Handler(void)
   {
   }
 }
+
+#ifdef  USE_FULL_ASSERT
+void assert_failed(uint8_t *file, uint32_t line)
+{
+}
+#endif /* USE_FULL_ASSERT */

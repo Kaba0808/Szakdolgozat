@@ -1,2 +1,2 @@
-Src/lea.o: ../Src/lea.c ../Src/lea.h
-../Src/lea.h:
+Src/lea.o: ../Src/lea.c ../Inc/lea.h
+../Inc/lea.h:

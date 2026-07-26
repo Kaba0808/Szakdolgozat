@@ -1,7 +1,7 @@
-../Src/speck.c:11:6:Words64ToBytes	24	static
-../Src/speck.c:16:6:BytesToWords64	24	static
-../Src/speck.c:21:6:Speck128128KeySchedule	88	static
-../Src/speck.c:33:6:Speck128128Encrypt	88	static
-../Src/speck.c:43:6:Speck128128Decrypt	80	static
+../Src/speck.c:11:6:Words64ToBytes	0	static
+../Src/speck.c:16:6:BytesToWords64	0	static
+../Src/speck.c:21:6:Speck128128KeySchedule	20	static
+../Src/speck.c:33:6:Speck128128Encrypt	20	static
+../Src/speck.c:43:6:Speck128128Decrypt	20	static
 ../Src/speck.c:53:6:speck128_encrypt_block	56	static
 ../Src/speck.c:61:6:speck128_decrypt_block	56	static

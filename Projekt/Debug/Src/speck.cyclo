@@ -3,5 +3,5 @@
 ../Src/speck.c:21:6:Speck128128KeySchedule	2
 ../Src/speck.c:33:6:Speck128128Encrypt	2
 ../Src/speck.c:43:6:Speck128128Decrypt	2
-../Src/speck.c:53:6:speck128_encrypt_block	1
-../Src/speck.c:61:6:speck128_decrypt_block	1
+../Src/speck.c:53:6:speck128_encrypt_block	3
+../Src/speck.c:61:6:speck128_decrypt_block	3

@@ -1,2 +1,2 @@
-Src/aes.o: ../Src/aes.c ../Src/aes.h
-../Src/aes.h:
+Src/aes.o: ../Src/aes.c ../Inc/aes.h
+../Inc/aes.h:

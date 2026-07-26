@@ -18,6 +18,7 @@
 "./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.o"
 "./Src/aes.o"
 "./Src/ascon128.o"
+"./Src/crypto_modes.o"
 "./Src/gpio.o"
 "./Src/lea.o"
 "./Src/main.o"

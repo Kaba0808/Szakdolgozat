@@ -27,8 +27,8 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
  ../Drivers/BSP/STM32L4xx_Nucleo_32/stm32l4xx_nucleo_32.h ../Inc/usart.h \
- ../Inc/main.h ../Inc/gpio.h ../Src/aes.h ../Src/speck.h ../Src/lea.h \
- ../Src/ascon128.h
+ ../Inc/main.h ../Inc/gpio.h ../Inc/aes.h ../Inc/speck.h ../Inc/lea.h \
+ ../Inc/ascon128.h
 ../Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Inc/stm32l4xx_hal_conf.h:
@@ -61,7 +61,7 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
 ../Inc/usart.h:
 ../Inc/main.h:
 ../Inc/gpio.h:
-../Src/aes.h:
-../Src/speck.h:
-../Src/lea.h:
-../Src/ascon128.h:
+../Inc/aes.h:
+../Inc/speck.h:
+../Inc/lea.h:
+../Inc/ascon128.h:
