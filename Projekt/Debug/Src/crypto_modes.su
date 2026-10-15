@@ -1,9 +1,0 @@
-../Src/crypto_modes.c:12:6:bench_aes_ecb_encrypt	208	static
-../Src/crypto_modes.c:20:6:bench_aes_ecb_decrypt	208	static
-../Src/crypto_modes.c:29:6:bench_aes_ctr_xcrypt	208	static
-../Src/crypto_modes.c:39:6:bench_speck_ecb_encrypt	328	static
-../Src/crypto_modes.c:52:6:bench_speck_ecb_decrypt	328	static
-../Src/crypto_modes.c:69:6:bench_lea_ecb_encrypt	792	static
-../Src/crypto_modes.c:75:6:bench_lea_ecb_decrypt	792	static
-../Src/crypto_modes.c:85:5:bench_ascon_aead_encrypt	1104	static
-../Src/crypto_modes.c:100:5:bench_ascon_aead_decrypt	1104	static

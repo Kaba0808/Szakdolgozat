@@ -1,15 +1,22 @@
-#define ECB 1
-#define CBC 1
-#define CTR 1
-#define AES128 1
-
+/**
+  ******************************************************************************
+  * @file           : aes.c
+  * @brief          : AES-128 (FIPS 197) - ECB, CBC es CTR mod
+  *
+  * A tiny-AES-c konyvtar (https://github.com/kokke/tiny-AES-c, The Unlicense)
+  * AES-128-ra szukitett valtozata. Az uzemmodok es a kulcsmeret az aes.h-ban
+  * rogzitett. Tablazatok: csak a 256 bajtos S-box es inverze (const, Flash).
+  * Helyesseg: NIST SP 800-38A F.1.1 ECB-AES128 tesztvektor + korut.
+  ******************************************************************************
+  */
 #include <string.h>
 #include "aes.h"
 
-#define Nb 4
-#define Nk 4
-#define Nr 10
+#define Nb 4    /* allapot oszlopainak szama (32 bites szavak) */
+#define Nk 4    /* kulcs hossza 32 bites szavakban (128 bit) */
+#define Nr 10   /* korok szama AES-128 eseten */
 
+/* Az allapot 4x4 bajtos matrix; state[oszlop][sor] elrendezesben */
 typedef uint8_t state_t[4][4];
 
 // Substitution box (S-box)
@@ -56,6 +63,7 @@ static const uint8_t Rcon[11] = {
 #define getSBoxValue(num) (sbox[(num)])
 #define getSBoxInvert(num) (rsbox[(num)])
 
+/* Kulcskiterjesztes: 11 db 16 bajtos korkulcs (176 bajt) a fo kulcsbol */
 static void KeyExpansion(uint8_t* RoundKey, const uint8_t* Key)
 {
   unsigned i, j, k;
@@ -116,6 +124,7 @@ void AES_ctx_set_iv(struct AES_ctx* ctx, const uint8_t* iv)
   memcpy(ctx->Iv, iv, AES_BLOCKLEN);
 }
 
+/* AddRoundKey: az allapot XOR az aktualis korkulccsal */
 static void AddRoundKey(uint8_t round, state_t* state, const uint8_t* RoundKey)
 {
   uint8_t i, j;
@@ -128,6 +137,7 @@ static void AddRoundKey(uint8_t round, state_t* state, const uint8_t* RoundKey)
   }
 }
 
+/* SubBytes: minden bajt csereje az S-boxbol (tablazatos kikereses) */
 static void SubBytes(state_t* state)
 {
   uint8_t i, j;
@@ -140,6 +150,7 @@ static void SubBytes(state_t* state)
   }
 }
 
+/* ShiftRows: az i. sor ciklikus eltolasa balra i pozicioval */
 static void ShiftRows(state_t* state)
 {
   uint8_t temp;
@@ -164,11 +175,13 @@ static void ShiftRows(state_t* state)
   (*state)[1][3] = temp;
 }
 
+/* xtime: szorzas 2-vel GF(2^8)-ban (redukcio: x^8+x^4+x^3+x+1) */
 static uint8_t xtime(uint8_t x)
 {
   return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
 }
 
+/* MixColumns: oszloponkent 4 xtime hivas (egyutthatok: 2, 3, 1, 1) */
 static void MixColumns(state_t* state)
 {
   uint8_t i;
@@ -184,6 +197,7 @@ static void MixColumns(state_t* state)
   }
 }
 
+/* Altalanos GF(2^8)-szorzas: 4 egymasba agyazott xtime-lanc (10 hivas) */
 #define Multiply(x, y)                                \
       (  ((y & 1) * x) ^                              \
       ((y>>1 & 1) * xtime(x)) ^                       \
@@ -191,6 +205,8 @@ static void MixColumns(state_t* state)
       ((y>>3 & 1) * xtime(xtime(xtime(x)))) ^         \
       ((y>>4 & 1) * xtime(xtime(xtime(xtime(x))))))
 
+/* InvMixColumns: oszloponkent 16 Multiply (egyutthatok: 14, 11, 13, 9) -
+   ez okozza a visszafejtes tobbletkoltseget */
 static void InvMixColumns(state_t* state)
 {
   int i;
@@ -204,11 +220,12 @@ static void InvMixColumns(state_t* state)
 
     (*state)[i][0] = Multiply(a, 0x0e) ^ Multiply(b, 0x0b) ^ Multiply(c, 0x0d) ^ Multiply(d, 0x09);
     (*state)[i][1] = Multiply(a, 0x09) ^ Multiply(b, 0x0e) ^ Multiply(c, 0x0b) ^ Multiply(d, 0x0d);
-    (*state)[i][2] = Multiply(a, 0x0d) ^ Multiply(b, 0x09) ^ Multiply(c, 0x0e) ^ Multiply(b, 0x0b);
+    (*state)[i][2] = Multiply(a, 0x0d) ^ Multiply(b, 0x09) ^ Multiply(c, 0x0e) ^ Multiply(d, 0x0b);
     (*state)[i][3] = Multiply(a, 0x0b) ^ Multiply(b, 0x0d) ^ Multiply(c, 0x09) ^ Multiply(d, 0x0e);
   }
 }
 
+/* Inverz lepesek a visszafejteshez */
 static void InvSubBytes(state_t* state)
 {
   uint8_t i, j;
@@ -245,6 +262,7 @@ static void InvShiftRows(state_t* state)
   (*state)[3][3] = temp;
 }
 
+/* Titkosito korfuggveny: kezdo AddRoundKey, 9 teljes kor, utolso kor MixColumns nelkul */
 static void Cipher(state_t* state, const uint8_t* RoundKey)
 {
   uint8_t round = 0;
@@ -263,6 +281,7 @@ static void Cipher(state_t* state, const uint8_t* RoundKey)
   AddRoundKey(Nr, state, RoundKey);
 }
 
+/* Visszafejto korfuggveny: a lepesek inverzei forditott sorrendben */
 static void InvCipher(state_t* state, const uint8_t* RoundKey)
 {
   uint8_t round = 0;
@@ -280,7 +299,9 @@ static void InvCipher(state_t* state, const uint8_t* RoundKey)
   }
 }
 
-// --- PUBLIC FUNCTIONS ---
+/* ---------------------------- Nyilvanos API ---------------------------- */
+
+/* ECB: egyetlen 16 bajtos blokk helyben titkositasa / visszafejtese */
 
 void AES_ECB_encrypt(const struct AES_ctx* ctx, uint8_t* buf)
 {
@@ -329,6 +350,8 @@ void AES_CBC_decrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, size_t length)
   }
 }
 
+/* CTR: a szamlalo (Iv) titkositasabol kulcsfolyam, XOR a pufferrel.
+   Ugyanaz a fuggveny titkosit es fejt vissza; a szamlalo big-endian novekszik. */
 void AES_CTR_xcrypt_buffer(struct AES_ctx* ctx, uint8_t* buf, size_t length)
 {
   uint8_t buffer[AES_BLOCKLEN];

@@ -1,21 +1,30 @@
 /**
   ******************************************************************************
   * @file           : lea.c
-  * @brief          : LEA-128 - standardized types and optimized memory loads
+  * @brief          : LEA-128/192/256 blokktitkosito (ECB)
+  *
+  * Sajat C-implementacio a specifikacio alapjan (Hong et al., WISA 2013;
+  * Lee et al., Sensors 2014). 128 bites blokk, 4 db 32 bites szo,
+  * ARX-alapu altalanositott Feistel-halozat. A meres a 128 bites kulcsot
+  * hasznalja (24 kor). Helyesseg: KISA LEA-128 tesztvektor + korut.
   ******************************************************************************
   */
 #include "lea.h"
 #include <stdint.h>
 #include <string.h>
 
+/* 32 bites forgatasok. A (32-n)&31 maszk n = 0 eseten is definialt
+   viselkedest ad; a fordito Cortex-M4-en egyetlen ROR utasitasra forditja. */
 static inline uint32_t rol32(uint32_t x, unsigned int n) {
-    return (x << n) | (x >> (32U - n));
+    return (x << n) | (x >> ((32U - n) & 31U));
 }
 
 static inline uint32_t ror32(uint32_t x, unsigned int n) {
-    return (x >> n) | (x << (32U - n));
+    return (x >> n) | (x << ((32U - n) & 31U));
 }
 
+/* Little-endian betoltes/tarolas (a Cortex-M4 little-endian, igazitatlan
+   hozzaferest is tamogat, a memcpy egyetlen LDR/STR-re fordul) */
 static inline uint32_t load32_le(const uint8_t *src) {
     uint32_t val;
     memcpy(&val, src, 4);
@@ -26,15 +35,19 @@ static inline void store32_le(uint8_t *dst, uint32_t x) {
     memcpy(dst, &x, 4);
 }
 
+/* Kulcsgeneralasi konstansok: delta_0..delta_7 (a specifikacio szerint) */
 static const uint32_t delta_seed[8] = {
     0xc3efe9dbU, 0x44626b02U, 0x79e27c8aU, 0x78df30ecU,
     0x715ea49eU, 0xc785da0aU, 0xe04ef22aU, 0xe5c40957U
 };
 
+/* ROL_i(delta_j): a j. konstans i bittel balra forgatva */
 static uint32_t delta_word(unsigned int row, unsigned int idx) {
     return rol32(delta_seed[row & 7U], idx & 31U);
 }
 
+/* Kulcsgeneralas: korkulcsonkent 6 db 32 bites szo, RK_i = (T0,T1,T2,T1,T3,T1)
+   a 128 bites kulcsnal; osszesen 24 x 6 = 144 szo. */
 void lea_set_key(LEA_KEY *key, const uint8_t *mk, unsigned int mk_len) {
     uint32_t t[8];
     unsigned int i;
@@ -131,6 +144,8 @@ void lea_set_key(LEA_KEY *key, const uint8_t *mk, unsigned int mk_len) {
     }
 }
 
+/* Egy blokk titkositasa. A specifikacio szerinti szocsere (X3' = X0) helyett
+   a kod a szavak szerepet koronkent forgatja (r & 3), igy nincs masolas. */
 void lea_encrypt(uint8_t *ct, const uint8_t *pt, const LEA_KEY *key) {
     uint32_t x0, x1, x2, x3;
     unsigned int r;
@@ -177,6 +192,7 @@ void lea_encrypt(uint8_t *ct, const uint8_t *pt, const LEA_KEY *key) {
     store32_le(ct + 12, x3);
 }
 
+/* Egy blokk visszafejtese: forditott korsorrend, ROL<->ROR, osszeadas helyett kivonas */
 void lea_decrypt(uint8_t *pt, const uint8_t *ct, const LEA_KEY *key) {
     uint32_t x0, x1, x2, x3;
     int r;
@@ -223,6 +239,7 @@ void lea_decrypt(uint8_t *pt, const uint8_t *ct, const LEA_KEY *key) {
     store32_le(pt + 12, x3);
 }
 
+/* ECB: a puffer 16 bajtos blokkonkent; a hossznak 16 tobbszorosenek kell lennie */
 void lea_ecb_encrypt(uint8_t *ct, const uint8_t *pt, unsigned int len, const LEA_KEY *key) {
     unsigned int i;
     if (ct == NULL || pt == NULL || key == NULL) {

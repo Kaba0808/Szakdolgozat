@@ -1,7 +1,8 @@
-../Inc/ascon128.h:33:24:LOADBYTES	20	static
-../Inc/ascon128.h:42:20:STOREBYTES	20	static
-../Inc/ascon128.h:61:20:ROUND	48	static
-../Inc/ascon128.h:88:20:P12	8	static
-../Inc/ascon128.h:103:20:P6	8	static
-../Src/ascon128.c:11:5:ascon128_aead_encrypt	144	static
-../Src/ascon128.c:72:5:ascon128_aead_decrypt	160	static
+../Inc/ascon128.h:47:24:LOADBYTES	20	static
+../Inc/ascon128.h:55:20:STOREBYTES	20	static
+../Inc/ascon128.h:73:20:ROUND	48	static
+../Inc/ascon128.h:104:20:P12	8	static
+../Inc/ascon128.h:111:20:P6	8	static
+../Src/ascon128.c:29:13:ascon_absorb_ad	48	static
+../Src/ascon128.c:54:5:ascon128_aead_encrypt	136	static
+../Src/ascon128.c:92:5:ascon128_aead_decrypt	152	static
