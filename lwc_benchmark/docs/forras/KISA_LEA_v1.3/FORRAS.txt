@@ -1,0 +1,3 @@
+KISA: 블록암호 LEA 소스코드 (v1.3), LEA_C_Standalone_src.zip / src/
+Tukor: https://github.com/jinahya/kisa-lea (doc/), commit ca26aa48c0ede9376ad6fc5e6713b4b677acb3e8
+ZIP SHA-256: 335695466d5b3e43385b9110e556df230279c2b6f152c970d61dbedbd579e065

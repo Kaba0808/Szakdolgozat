@@ -1,6 +1,4 @@
-../Src/lea.c:45:17:delta_word	0	static
-../Src/lea.c:51:6:lea_set_key	88	static
-../Src/lea.c:149:6:lea_encrypt	48	static
-../Src/lea.c:196:6:lea_decrypt	36	static
-../Src/lea.c:243:6:lea_ecb_encrypt	24	static
-../Src/lea.c:256:6:lea_ecb_decrypt	24	static
+../Src/lea.c:127:6:lea_set_key_generic	8	static
+../Src/lea.c:625:6:lea_encrypt	20	static
+../Src/lea.c:753:6:lea_decrypt	20	static
+../Src/lea.c:882:6:lea_set_key	0	static

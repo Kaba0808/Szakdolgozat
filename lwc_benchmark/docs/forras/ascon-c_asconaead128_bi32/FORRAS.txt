@@ -1,0 +1,1 @@
+ascon-c commit 446347f21b209f3921c65ece70027c366cbe1693 (2026-01-28), https://github.com/ascon/ascon-c

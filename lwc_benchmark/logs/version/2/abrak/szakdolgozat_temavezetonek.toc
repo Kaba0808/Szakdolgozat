@@ -1,0 +1,89 @@
+\babel@toc {magyar}{}\relax 
+\contentsline {chapter}{\numberline {1}Bevezetés}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Háttérismeretek}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Szimmetrikus kriptográfia alapjai}{3}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Blokktitkosítók}{3}{subsection.2.1.1}%
+\contentsline {subsubsection}{SPN -- helyettesítő-permutációs hálózat}{4}{section*.2}%
+\contentsline {subsubsection}{Feistel-hálózat}{4}{section*.3}%
+\contentsline {subsubsection}{ARX-szerkezet}{4}{section*.4}%
+\contentsline {subsection}{\numberline {2.1.2}Üzemmódok}{5}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}A DES és az AES rövid áttekintése}{6}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Hashfüggvények és üzenethitelesítés}{6}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Kriptográfiai hashfüggvények}{6}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}MAC -- üzenethitelesítő kód}{7}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}AEAD -- hitelesített titkosítás kapcsolódó adatokkal}{7}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Erőforrás-korlátozott rendszerek jellemzői}{7}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Mikrovezérlők és erőforrásaik}{7}{subsection.2.3.1}%
+\contentsline {section}{\numberline {2.4}A lightweight kriptográfia motivációja}{8}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}A hagyományos szabványok korlátai}{8}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}A NIST Lightweight Cryptography szabványosítás}{9}{subsection.2.4.2}%
+\contentsline {chapter}{\numberline {3}Vizsgált algoritmusok bemutatása}{10}{chapter.3}%
+\contentsline {section}{\numberline {3.1}AES-128}{10}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Felépítés és működés}{10}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Kulcsgenerálás}{11}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Az AES-128 mint viszonyítási alap}{11}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}SPECK~128/128}{11}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Körfüggvény}{11}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Kulcsgenerálás}{12}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Szoftveres megvalósítás}{12}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Bizalmi kérdések}{12}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}LEA-128}{13}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Általánosított Feistel-hálózat}{13}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}A 32 bites szóméret}{13}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Kulcsgenerálás}{13}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}ASCON-128}{14}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Szivacs- és duplexkonstrukció}{14}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Az ASCON-permutáció}{14}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Az AEAD működése}{15}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}A vizsgált változat}{15}{subsection.3.4.4}%
+\contentsline {section}{\numberline {3.5}Az algoritmusok összevetése}{16}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Implementáció és mérési módszer}{17}{chapter.4}%
+\contentsline {section}{\numberline {4.1}A mérési platform}{17}{section.4.1}%
+\contentsline {section}{\numberline {4.2}A forráskód szerkezete}{18}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Az algoritmusok megvalósítása}{18}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}AES-128}{18}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}SPECK~128/128}{19}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}LEA-128}{19}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}ASCON-128}{20}{subsection.4.3.4}%
+\contentsline {section}{\numberline {4.4}A mérési keretrendszer}{20}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Önellenőrzés és bemenetek}{20}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Ciklusmérés a DWT-egységgel}{20}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Ismétlések és statisztika}{21}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}Az eredmények kiírása}{22}{subsection.4.4.4}%
+\contentsline {section}{\numberline {4.5}Az üzemmódok megválasztása}{22}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Fordítási beállítások}{22}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Teljesítménymérések és eredmények}{24}{chapter.5}%
+\contentsline {section}{\numberline {5.1}A kulcsgenerálás költsége}{24}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Titkosítás és visszafejtés}{25}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Skálázódás az üzenetmérettel}{26}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Feldolgozási sebesség}{28}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Kódméret és memóriaigény}{29}{section.5.5}%
+\contentsline {section}{\numberline {5.6}A fordítói optimalizáció hatása}{30}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Optimalizálás nélkül és optimalizálva}{30}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}\texttt {-O2}, \texttt {-O3} és \texttt {-Ofast}}{31}{subsection.5.6.2}%
+\contentsline {subsection}{\numberline {5.6.3}\texttt {-Os/-Oz}}{31}{subsection.5.6.3}%
+\contentsline {subsection}{\numberline {5.6.4}A mérések ismételhetősége}{32}{subsection.5.6.4}%
+\contentsline {section}{\numberline {5.7}Az eredmények összegzése}{32}{section.5.7}%
+\contentsline {chapter}{\numberline {6}Biztonsági elemzés és összehasonlító értékelés}{33}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Alapfogalmak}{33}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Támadási modellek}{33}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Biztonsági szint és biztonsági tartalék}{33}{subsection.6.1.2}%
+\contentsline {section}{\numberline {6.2}A főbb támadástípusok}{34}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Differenciális kriptoanalízis}{34}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Lineáris kriptoanalízis}{34}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Algebrai és rotációs támadások}{34}{subsection.6.2.3}%
+\contentsline {subsection}{\numberline {6.2.4}Oldalcsatorna-támadások}{35}{subsection.6.2.4}%
+\contentsline {subsection}{\numberline {6.2.5}Születésnapi korlát}{35}{subsection.6.2.5}%
+\contentsline {section}{\numberline {6.3}Az algoritmusok biztonsági jellemzői}{35}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}AES-128}{35}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}SPECK~128/128}{36}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}LEA-128}{36}{subsection.6.3.3}%
+\contentsline {subsection}{\numberline {6.3.4}ASCON-128}{36}{subsection.6.3.4}%
+\contentsline {section}{\numberline {6.4}Összehasonlító értékelés}{36}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Összefoglalás és továbbfejlesztési lehetőségek}{38}{chapter.7}%
+\contentsline {section}{\numberline {7.1}A célkitűzések teljesülése}{38}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Fő megállapítások}{38}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Alkalmazási ajánlások}{39}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Korlátok}{40}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Továbbfejlesztési lehetőségek}{41}{section.7.5}%
+\contentsline {chapter}{Irodalomjegyzék}{42}{chapter*.21}%

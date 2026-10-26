@@ -1,6 +1,4 @@
-../Src/lea.c:45:17:delta_word	1
-../Src/lea.c:51:6:lea_set_key	10
-../Src/lea.c:149:6:lea_encrypt	9
-../Src/lea.c:196:6:lea_decrypt	9
-../Src/lea.c:243:6:lea_ecb_encrypt	6
-../Src/lea.c:256:6:lea_ecb_decrypt	6
+../Src/lea.c:127:6:lea_set_key_generic	6
+../Src/lea.c:625:6:lea_encrypt	3
+../Src/lea.c:753:6:lea_decrypt	3
+../Src/lea.c:882:6:lea_set_key	1

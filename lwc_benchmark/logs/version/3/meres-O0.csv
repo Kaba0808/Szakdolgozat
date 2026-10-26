@@ -1,0 +1,705 @@
+
+
+========================================
+STM32 Crypto Benchmark Indul...
+Orajel: 80000000 Hz
+Forditas: -O0, ismetles/meres: 100, korok: 10
+ART: utasitas-gyorsitotar be, adat-gyorsitotar be, eloolvasas ki
+========================================
+
+Meresi tobbletkoltseg (100 iteracio):
+  ures ciklus                        9.17 ciklus/iteracio
+  ciklus + ures fuggvenyhivas        22.22 ciklus/iteracio
+  ciklus + 9 parameteres ures hivas  65�
+
+========================================
+STM32 Crypto Benchmark Indul...
+Orajel: 80000000 Hz
+Forditas: -O0, ismetles/meres: 100, korok: 10
+ART: utasitas-gyorsitotar be, adat-gyorsitotar be, eloolvasas ki
+========================================
+
+Meresi tobbletkoltseg (100 iteracio):
+  ures ciklus                        9.17 ciklus/iteracio
+  ciklus + ures fuggvenyhivas        22.22 ciklus/iteracio
+  ciklus + 9 parameteres ures hivas  65.32 ciklus/iteracio
+
+Onellenorzes:
+  AES-128 FIPS 197 C.1         OK
+  AES-128 visszafejtes         OK
+  AES-128 SP 800-38A F.1.1     OK
+  AES-128 visszafejtes         OK
+  AES-tiny tesztvektor         OK
+  AES-tiny visszafejtes        OK
+  SPECK-128 tesztvektor        OK
+  SPECK-128 visszafejtes       OK
+  LEA-128 tesztvektor          OK
+  LEA-128 visszafejtes         OK
+  ASCON-128 KAT (AD nelkul)    OK
+  ASCON-128 visszafejtes       OK
+  ASCON-128 KAT (16 B AD)      OK
+  ASCON-128 hamis uzenet       OK (elutasitva)
+Onellenorzes: MINDEN OK
+
+--- CSV (minden kor) ---
+Futas,Algoritmus,Muvelet,Meret,Ciklus
+1,AES-128,KeyGen,0,1513
+1,AES-128,KeyGenDec,0,6272
+1,SPECK-128,KeyGen,0,3373
+1,LEA-128,KeyGen,0,11303
+1,ASCON-128,KeyGen,0,0
+1,AES-tiny,KeyGen,0,6230
+1,AES-128,Encrypt,16,2955
+1,AES-128,Decrypt,16,2940
+1,SPECK-128,Encrypt,16,4393
+1,SPECK-128,Decrypt,16,4004
+1,LEA-128,Encrypt,16,4070
+1,LEA-128,Decrypt,16,4095
+1,ASCON-128,Encrypt,16,57439
+1,ASCON-128,Decrypt,16,58063
+1,AES-tiny,Encrypt,16,30286
+1,AES-tiny,Decrypt,16,273695
+1,AES-tinyCTR,Encrypt,16,30954
+1,AES-tinyCTR,Decrypt,16,30953
+1,AES-128,Encrypt,64,11574
+1,AES-128,Decrypt,64,11561
+1,SPECK-128,Encrypt,64,17425
+1,SPECK-128,Decrypt,64,15869
+1,LEA-128,Encrypt,64,16133
+1,LEA-128,Decrypt,64,16233
+1,ASCON-128,Encrypt,64,115321
+1,ASCON-128,Decrypt,64,116023
+1,AES-tiny,Encrypt,64,120830
+1,AES-tiny,Decrypt,64,1094497
+1,AES-tinyCTR,Encrypt,64,123457
+1,AES-tinyCTR,Decrypt,64,123456
+1,AES-128,Encrypt,256,46006
+1,AES-128,Decrypt,256,46037
+1,SPECK-128,Encrypt,256,69553
+1,SPECK-128,Decrypt,256,63329
+1,LEA-128,Encrypt,256,64385
+1,LEA-128,Decrypt,256,64785
+1,ASCON-128,Encrypt,256,346849
+1,ASCON-128,Decrypt,256,347863
+1,AES-tiny,Encrypt,256,482966
+1,AES-tiny,Decrypt,256,4377652
+1,AES-tinyCTR,Encrypt,256,493506
+1,AES-tinyCTR,Decrypt,256,493505
+1,AES-128,Encrypt,1024,183778
+1,AES-128,Decrypt,1024,183923
+1,SPECK-128,Encrypt,1024,278065
+1,SPECK-128,Decrypt,1024,253169
+1,LEA-128,Encrypt,1024,257393
+1,LEA-128,Decrypt,1024,258993
+1,ASCON-128,Encrypt,1024,1272961
+1,ASCON-128,Decrypt,1024,1275223
+1,AES-tiny,Encrypt,1024,1931535
+1,AES-tiny,Decrypt,1024,17510314
+1,AES-tinyCTR,Encrypt,1024,1973370
+1,AES-tinyCTR,Decrypt,1024,1973369
+2,AES-128,KeyGen,0,1513
+2,AES-128,KeyGenDec,0,6272
+2,SPECK-128,KeyGen,0,3373
+2,LEA-128,KeyGen,0,11303
+2,ASCON-128,KeyGen,0,0
+2,AES-tiny,KeyGen,0,6230
+2,AES-128,Encrypt,16,2955
+2,AES-128,Decrypt,16,2940
+2,SPECK-128,Encrypt,16,4393
+2,SPECK-128,Decrypt,16,4004
+2,LEA-128,Encrypt,16,4070
+2,LEA-128,Decrypt,16,4095
+2,ASCON-128,Encrypt,16,57439
+2,ASCON-128,Decrypt,16,58063
+2,AES-tiny,Encrypt,16,30286
+2,AES-tiny,Decrypt,16,273695
+2,AES-tinyCTR,Encrypt,16,30954
+2,AES-tinyCTR,Decrypt,16,30953
+2,AES-128,Encrypt,64,11574
+2,AES-128,Decrypt,64,11561
+2,SPECK-128,Encrypt,64,17425
+2,SPECK-128,Decrypt,64,15869
+2,LEA-128,Encrypt,64,16133
+2,LEA-128,Decrypt,64,16233
+2,ASCON-128,Encrypt,64,115321
+2,ASCON-128,Decrypt,64,116023
+2,AES-tiny,Encrypt,64,120830
+2,AES-tiny,Decrypt,64,1094497
+2,AES-tinyCTR,Encrypt,64,123457
+2,AES-tinyCTR,Decrypt,64,123456
+2,AES-128,Encrypt,256,46006
+2,AES-128,Decrypt,256,46037
+2,SPECK-128,Encrypt,256,69553
+2,SPECK-128,Decrypt,256,63329
+2,LEA-128,Encrypt,256,64385
+2,LEA-128,Decrypt,256,64785
+2,ASCON-128,Encrypt,256,346849
+2,ASCON-128,Decrypt,256,347863
+2,AES-tiny,Encrypt,256,482966
+2,AES-tiny,Decrypt,256,4377652
+2,AES-tinyCTR,Encrypt,256,493506
+2,AES-tinyCTR,Decrypt,256,493505
+2,AES-128,Encrypt,1024,183778
+2,AES-128,Decrypt,1024,183923
+2,SPECK-128,Encrypt,1024,278065
+2,SPECK-128,Decrypt,1024,253169
+2,LEA-128,Encrypt,1024,257393
+2,LEA-128,Decrypt,1024,258993
+2,ASCON-128,Encrypt,1024,1272961
+2,ASCON-128,Decrypt,1024,1275223
+2,AES-tiny,Encrypt,1024,1931535
+2,AES-tiny,Decrypt,1024,17510315
+2,AES-tinyCTR,Encrypt,1024,1973370
+2,AES-tinyCTR,Decrypt,1024,1973369
+3,AES-128,KeyGen,0,1513
+3,AES-128,KeyGenDec,0,6272
+3,SPECK-128,KeyGen,0,3373
+3,LEA-128,KeyGen,0,11303
+3,ASCON-128,KeyGen,0,0
+3,AES-tiny,KeyGen,0,6230
+3,AES-128,Encrypt,16,2955
+3,AES-128,Decrypt,16,2940
+3,SPECK-128,Encrypt,16,4393
+3,SPECK-128,Decrypt,16,4004
+3,LEA-128,Encrypt,16,4070
+3,LEA-128,Decrypt,16,4095
+3,ASCON-128,Encrypt,16,57439
+3,ASCON-128,Decrypt,16,58063
+3,AES-tiny,Encrypt,16,30286
+3,AES-tiny,Decrypt,16,273695
+3,AES-tinyCTR,Encrypt,16,30954
+3,AES-tinyCTR,Decrypt,16,30953
+3,AES-128,Encrypt,64,11574
+3,AES-128,Decrypt,64,11561
+3,SPECK-128,Encrypt,64,17425
+3,SPECK-128,Decrypt,64,15869
+3,LEA-128,Encrypt,64,16133
+3,LEA-128,Decrypt,64,16233
+3,ASCON-128,Encrypt,64,115321
+3,ASCON-128,Decrypt,64,116023
+3,AES-tiny,Encrypt,64,120830
+3,AES-tiny,Decrypt,64,1094497
+3,AES-tinyCTR,Encrypt,64,123457
+3,AES-tinyCTR,Decrypt,64,123456
+3,AES-128,Encrypt,256,46006
+3,AES-128,Decrypt,256,46037
+3,SPECK-128,Encrypt,256,69553
+3,SPECK-128,Decrypt,256,63329
+3,LEA-128,Encrypt,256,64385
+3,LEA-128,Decrypt,256,64785
+3,ASCON-128,Encrypt,256,346849
+3,ASCON-128,Decrypt,256,347863
+3,AES-tiny,Encrypt,256,482966
+3,AES-tiny,Decrypt,256,4377652
+3,AES-tinyCTR,Encrypt,256,493506
+3,AES-tinyCTR,Decrypt,256,493505
+3,AES-128,Encrypt,1024,183778
+3,AES-128,Decrypt,1024,183923
+3,SPECK-128,Encrypt,1024,278065
+3,SPECK-128,Decrypt,1024,253169
+3,LEA-128,Encrypt,1024,257393
+3,LEA-128,Decrypt,1024,258993
+3,ASCON-128,Encrypt,1024,1272961
+3,ASCON-128,Decrypt,1024,1275223
+3,AES-tiny,Encrypt,1024,1931535
+3,AES-tiny,Decrypt,1024,17510315
+3,AES-tinyCTR,Encrypt,1024,1973370
+3,AES-tinyCTR,Decrypt,1024,1973369
+4,AES-128,KeyGen,0,1513
+4,AES-128,KeyGenDec,0,6272
+4,SPECK-128,KeyGen,0,3373
+4,LEA-128,KeyGen,0,11303
+4,ASCON-128,KeyGen,0,0
+4,AES-tiny,KeyGen,0,6230
+4,AES-128,Encrypt,16,2955
+4,AES-128,Decrypt,16,2940
+4,SPECK-128,Encrypt,16,4393
+4,SPECK-128,Decrypt,16,4004
+4,LEA-128,Encrypt,16,4070
+4,LEA-128,Decrypt,16,4095
+4,ASCON-128,Encrypt,16,57439
+4,ASCON-128,Decrypt,16,58063
+4,AES-tiny,Encrypt,16,30286
+4,AES-tiny,Decrypt,16,273695
+4,AES-tinyCTR,Encrypt,16,30954
+4,AES-tinyCTR,Decrypt,16,30953
+4,AES-128,Encrypt,64,11574
+4,AES-128,Decrypt,64,11561
+4,SPECK-128,Encrypt,64,17425
+4,SPECK-128,Decrypt,64,15869
+4,LEA-128,Encrypt,64,16133
+4,LEA-128,Decrypt,64,16233
+4,ASCON-128,Encrypt,64,115321
+4,ASCON-128,Decrypt,64,116023
+4,AES-tiny,Encrypt,64,120830
+4,AES-tiny,Decrypt,64,1094497
+4,AES-tinyCTR,Encrypt,64,123457
+4,AES-tinyCTR,Decrypt,64,123456
+4,AES-128,Encrypt,256,46006
+4,AES-128,Decrypt,256,46037
+4,SPECK-128,Encrypt,256,69553
+4,SPECK-128,Decrypt,256,63329
+4,LEA-128,Encrypt,256,64385
+4,LEA-128,Decrypt,256,64785
+4,ASCON-128,Encrypt,256,346849
+4,ASCON-128,Decrypt,256,347863
+4,AES-tiny,Encrypt,256,482966
+4,AES-tiny,Decrypt,256,4377652
+4,AES-tinyCTR,Encrypt,256,493506
+4,AES-tinyCTR,Decrypt,256,493505
+4,AES-128,Encrypt,1024,183778
+4,AES-128,Decrypt,1024,183923
+4,SPECK-128,Encrypt,1024,278065
+4,SPECK-128,Decrypt,1024,253169
+4,LEA-128,Encrypt,1024,257393
+4,LEA-128,Decrypt,1024,258993
+4,ASCON-128,Encrypt,1024,1272961
+4,ASCON-128,Decrypt,1024,1275223
+4,AES-tiny,Encrypt,1024,1931535
+4,AES-tiny,Decrypt,1024,17510314
+4,AES-tinyCTR,Encrypt,1024,1973370
+4,AES-tinyCTR,Decrypt,1024,1973369
+5,AES-128,KeyGen,0,1513
+5,AES-128,KeyGenDec,0,6272
+5,SPECK-128,KeyGen,0,3373
+5,LEA-128,KeyGen,0,11303
+5,ASCON-128,KeyGen,0,0
+5,AES-tiny,KeyGen,0,6230
+5,AES-128,Encrypt,16,2955
+5,AES-128,Decrypt,16,2940
+5,SPECK-128,Encrypt,16,4393
+5,SPECK-128,Decrypt,16,4004
+5,LEA-128,Encrypt,16,4070
+5,LEA-128,Decrypt,16,4095
+5,ASCON-128,Encrypt,16,57439
+5,ASCON-128,Decrypt,16,58063
+5,AES-tiny,Encrypt,16,30286
+5,AES-tiny,Decrypt,16,273695
+5,AES-tinyCTR,Encrypt,16,30954
+5,AES-tinyCTR,Decrypt,16,30953
+5,AES-128,Encrypt,64,11574
+5,AES-128,Decrypt,64,11561
+5,SPECK-128,Encrypt,64,17425
+5,SPECK-128,Decrypt,64,15869
+5,LEA-128,Encrypt,64,16133
+5,LEA-128,Decrypt,64,16233
+5,ASCON-128,Encrypt,64,115321
+5,ASCON-128,Decrypt,64,116023
+5,AES-tiny,Encrypt,64,120830
+5,AES-tiny,Decrypt,64,1094497
+5,AES-tinyCTR,Encrypt,64,123457
+5,AES-tinyCTR,Decrypt,64,123456
+5,AES-128,Encrypt,256,46006
+5,AES-128,Decrypt,256,46037
+5,SPECK-128,Encrypt,256,69553
+5,SPECK-128,Decrypt,256,63329
+5,LEA-128,Encrypt,256,64385
+5,LEA-128,Decrypt,256,64785
+5,ASCON-128,Encrypt,256,346849
+5,ASCON-128,Decrypt,256,347863
+5,AES-tiny,Encrypt,256,482966
+5,AES-tiny,Decrypt,256,4377652
+5,AES-tinyCTR,Encrypt,256,493506
+5,AES-tinyCTR,Decrypt,256,493505
+5,AES-128,Encrypt,1024,183778
+5,AES-128,Decrypt,1024,183923
+5,SPECK-128,Encrypt,1024,278065
+5,SPECK-128,Decrypt,1024,253169
+5,LEA-128,Encrypt,1024,257393
+5,LEA-128,Decrypt,1024,258993
+5,ASCON-128,Encrypt,1024,1272961
+5,ASCON-128,Decrypt,1024,1275223
+5,AES-tiny,Encrypt,1024,1931535
+5,AES-tiny,Decrypt,1024,17510315
+5,AES-tinyCTR,Encrypt,1024,1973370
+5,AES-tinyCTR,Decrypt,1024,1973369
+6,AES-128,KeyGen,0,1513
+6,AES-128,KeyGenDec,0,6272
+6,SPECK-128,KeyGen,0,3373
+6,LEA-128,KeyGen,0,11303
+6,ASCON-128,KeyGen,0,0
+6,AES-tiny,KeyGen,0,6230
+6,AES-128,Encrypt,16,2955
+6,AES-128,Decrypt,16,2940
+6,SPECK-128,Encrypt,16,4393
+6,SPECK-128,Decrypt,16,4004
+6,LEA-128,Encrypt,16,4070
+6,LEA-128,Decrypt,16,4095
+6,ASCON-128,Encrypt,16,57439
+6,ASCON-128,Decrypt,16,58063
+6,AES-tiny,Encrypt,16,30286
+6,AES-tiny,Decrypt,16,273695
+6,AES-tinyCTR,Encrypt,16,30954
+6,AES-tinyCTR,Decrypt,16,30953
+6,AES-128,Encrypt,64,11574
+6,AES-128,Decrypt,64,11561
+6,SPECK-128,Encrypt,64,17425
+6,SPECK-128,Decrypt,64,15869
+6,LEA-128,Encrypt,64,16133
+6,LEA-128,Decrypt,64,16233
+6,ASCON-128,Encrypt,64,115321
+6,ASCON-128,Decrypt,64,116023
+6,AES-tiny,Encrypt,64,120830
+6,AES-tiny,Decrypt,64,1094497
+6,AES-tinyCTR,Encrypt,64,123457
+6,AES-tinyCTR,Decrypt,64,123456
+6,AES-128,Encrypt,256,46006
+6,AES-128,Decrypt,256,46037
+6,SPECK-128,Encrypt,256,69553
+6,SPECK-128,Decrypt,256,63329
+6,LEA-128,Encrypt,256,64385
+6,LEA-128,Decrypt,256,64785
+6,ASCON-128,Encrypt,256,346849
+6,ASCON-128,Decrypt,256,347863
+6,AES-tiny,Encrypt,256,482966
+6,AES-tiny,Decrypt,256,4377652
+6,AES-tinyCTR,Encrypt,256,493506
+6,AES-tinyCTR,Decrypt,256,493505
+6,AES-128,Encrypt,1024,183778
+6,AES-128,Decrypt,1024,183923
+6,SPECK-128,Encrypt,1024,278065
+6,SPECK-128,Decrypt,1024,253169
+6,LEA-128,Encrypt,1024,257393
+6,LEA-128,Decrypt,1024,258993
+6,ASCON-128,Encrypt,1024,1272961
+6,ASCON-128,Decrypt,1024,1275223
+6,AES-tiny,Encrypt,1024,1931535
+6,AES-tiny,Decrypt,1024,17510315
+6,AES-tinyCTR,Encrypt,1024,1973370
+6,AES-tinyCTR,Decrypt,1024,1973369
+7,AES-128,KeyGen,0,1513
+7,AES-128,KeyGenDec,0,6272
+7,SPECK-128,KeyGen,0,3373
+7,LEA-128,KeyGen,0,11303
+7,ASCON-128,KeyGen,0,0
+7,AES-tiny,KeyGen,0,6230
+7,AES-128,Encrypt,16,2955
+7,AES-128,Decrypt,16,2940
+7,SPECK-128,Encrypt,16,4393
+7,SPECK-128,Decrypt,16,4004
+7,LEA-128,Encrypt,16,4070
+7,LEA-128,Decrypt,16,4095
+7,ASCON-128,Encrypt,16,57439
+7,ASCON-128,Decrypt,16,58063
+7,AES-tiny,Encrypt,16,30286
+7,AES-tiny,Decrypt,16,273695
+7,AES-tinyCTR,Encrypt,16,30954
+7,AES-tinyCTR,Decrypt,16,30953
+7,AES-128,Encrypt,64,11574
+7,AES-128,Decrypt,64,11561
+7,SPECK-128,Encrypt,64,17425
+7,SPECK-128,Decrypt,64,15869
+7,LEA-128,Encrypt,64,16133
+7,LEA-128,Decrypt,64,16233
+7,ASCON-128,Encrypt,64,115321
+7,ASCON-128,Decrypt,64,116023
+7,AES-tiny,Encrypt,64,120830
+7,AES-tiny,Decrypt,64,1094497
+7,AES-tinyCTR,Encrypt,64,123457
+7,AES-tinyCTR,Decrypt,64,123456
+7,AES-128,Encrypt,256,46006
+7,AES-128,Decrypt,256,46037
+7,SPECK-128,Encrypt,256,69553
+7,SPECK-128,Decrypt,256,63329
+7,LEA-128,Encrypt,256,64385
+7,LEA-128,Decrypt,256,64785
+7,ASCON-128,Encrypt,256,346849
+7,ASCON-128,Decrypt,256,347863
+7,AES-tiny,Encrypt,256,482966
+7,AES-tiny,Decrypt,256,4377652
+7,AES-tinyCTR,Encrypt,256,493506
+7,AES-tinyCTR,Decrypt,256,493505
+7,AES-128,Encrypt,1024,183778
+7,AES-128,Decrypt,1024,183923
+7,SPECK-128,Encrypt,1024,278065
+7,SPECK-128,Decrypt,1024,253169
+7,LEA-128,Encrypt,1024,257393
+7,LEA-128,Decrypt,1024,258993
+7,ASCON-128,Encrypt,1024,1272961
+7,ASCON-128,Decrypt,1024,1275223
+7,AES-tiny,Encrypt,1024,1931535
+7,AES-tiny,Decrypt,1024,17510314
+7,AES-tinyCTR,Encrypt,1024,1973370
+7,AES-tinyCTR,Decrypt,1024,1973369
+8,AES-128,KeyGen,0,1513
+8,AES-128,KeyGenDec,0,6272
+8,SPECK-128,KeyGen,0,3373
+8,LEA-128,KeyGen,0,11303
+8,ASCON-128,KeyGen,0,0
+8,AES-tiny,KeyGen,0,6230
+8,AES-128,Encrypt,16,2955
+8,AES-128,Decrypt,16,2940
+8,SPECK-128,Encrypt,16,4393
+8,SPECK-128,Decrypt,16,4004
+8,LEA-128,Encrypt,16,4070
+8,LEA-128,Decrypt,16,4095
+8,ASCON-128,Encrypt,16,57439
+8,ASCON-128,Decrypt,16,58063
+8,AES-tiny,Encrypt,16,30286
+8,AES-tiny,Decrypt,16,273695
+8,AES-tinyCTR,Encrypt,16,30954
+8,AES-tinyCTR,Decrypt,16,30953
+8,AES-128,Encrypt,64,11574
+8,AES-128,Decrypt,64,11561
+8,SPECK-128,Encrypt,64,17425
+8,SPECK-128,Decrypt,64,15869
+8,LEA-128,Encrypt,64,16133
+8,LEA-128,Decrypt,64,16233
+8,ASCON-128,Encrypt,64,115321
+8,ASCON-128,Decrypt,64,116023
+8,AES-tiny,Encrypt,64,120830
+8,AES-tiny,Decrypt,64,1094497
+8,AES-tinyCTR,Encrypt,64,123457
+8,AES-tinyCTR,Decrypt,64,123456
+8,AES-128,Encrypt,256,46006
+8,AES-128,Decrypt,256,46037
+8,SPECK-128,Encrypt,256,69553
+8,SPECK-128,Decrypt,256,63329
+8,LEA-128,Encrypt,256,64385
+8,LEA-128,Decrypt,256,64785
+8,ASCON-128,Encrypt,256,346849
+8,ASCON-128,Decrypt,256,347863
+8,AES-tiny,Encrypt,256,482966
+8,AES-tiny,Decrypt,256,4377652
+8,AES-tinyCTR,Encrypt,256,493506
+8,AES-tinyCTR,Decrypt,256,493505
+8,AES-128,Encrypt,1024,183778
+8,AES-128,Decrypt,1024,183923
+8,SPECK-128,Encrypt,1024,278065
+8,SPECK-128,Decrypt,1024,253169
+8,LEA-128,Encrypt,1024,257393
+8,LEA-128,Decrypt,1024,258993
+8,ASCON-128,Encrypt,1024,1272961
+8,ASCON-128,Decrypt,1024,1275223
+8,AES-tiny,Encrypt,1024,1931535
+8,AES-tiny,Decrypt,1024,17510315
+8,AES-tinyCTR,Encrypt,1024,1973370
+8,AES-tinyCTR,Decrypt,1024,1973369
+9,AES-128,KeyGen,0,1513
+9,AES-128,KeyGenDec,0,6272
+9,SPECK-128,KeyGen,0,3373
+9,LEA-128,KeyGen,0,11303
+9,ASCON-128,KeyGen,0,0
+9,AES-tiny,KeyGen,0,6230
+9,AES-128,Encrypt,16,2955
+9,AES-128,Decrypt,16,2940
+9,SPECK-128,Encrypt,16,4393
+9,SPECK-128,Decrypt,16,4004
+9,LEA-128,Encrypt,16,4070
+9,LEA-128,Decrypt,16,4095
+9,ASCON-128,Encrypt,16,57439
+9,ASCON-128,Decrypt,16,58063
+9,AES-tiny,Encrypt,16,30286
+9,AES-tiny,Decrypt,16,273695
+9,AES-tinyCTR,Encrypt,16,30954
+9,AES-tinyCTR,Decrypt,16,30953
+9,AES-128,Encrypt,64,11574
+9,AES-128,Decrypt,64,11561
+9,SPECK-128,Encrypt,64,17425
+9,SPECK-128,Decrypt,64,15869
+9,LEA-128,Encrypt,64,16133
+9,LEA-128,Decrypt,64,16233
+9,ASCON-128,Encrypt,64,115321
+9,ASCON-128,Decrypt,64,116023
+9,AES-tiny,Encrypt,64,120830
+9,AES-tiny,Decrypt,64,1094497
+9,AES-tinyCTR,Encrypt,64,123457
+9,AES-tinyCTR,Decrypt,64,123456
+9,AES-128,Encrypt,256,46006
+9,AES-128,Decrypt,256,46037
+9,SPECK-128,Encrypt,256,69553
+9,SPECK-128,Decrypt,256,63329
+9,LEA-128,Encrypt,256,64385
+9,LEA-128,Decrypt,256,64785
+9,ASCON-128,Encrypt,256,346849
+9,ASCON-128,Decrypt,256,347863
+9,AES-tiny,Encrypt,256,482966
+9,AES-tiny,Decrypt,256,4377652
+9,AES-tinyCTR,Encrypt,256,493506
+9,AES-tinyCTR,Decrypt,256,493505
+9,AES-128,Encrypt,1024,183778
+9,AES-128,Decrypt,1024,183923
+9,SPECK-128,Encrypt,1024,278065
+9,SPECK-128,Decrypt,1024,253169
+9,LEA-128,Encrypt,1024,257393
+9,LEA-128,Decrypt,1024,258993
+9,ASCON-128,Encrypt,1024,1272961
+9,ASCON-128,Decrypt,1024,1275223
+9,AES-tiny,Encrypt,1024,1931535
+9,AES-tiny,Decrypt,1024,17510315
+9,AES-tinyCTR,Encrypt,1024,1973370
+9,AES-tinyCTR,Decrypt,1024,1973369
+10,AES-128,KeyGen,0,1513
+10,AES-128,KeyGenDec,0,6272
+10,SPECK-128,KeyGen,0,3373
+10,LEA-128,KeyGen,0,11303
+10,ASCON-128,KeyGen,0,0
+10,AES-tiny,KeyGen,0,6230
+10,AES-128,Encrypt,16,2955
+10,AES-128,Decrypt,16,2940
+10,SPECK-128,Encrypt,16,4393
+10,SPECK-128,Decrypt,16,4004
+10,LEA-128,Encrypt,16,4070
+10,LEA-128,Decrypt,16,4095
+10,ASCON-128,Encrypt,16,57439
+10,ASCON-128,Decrypt,16,58063
+10,AES-tiny,Encrypt,16,30286
+10,AES-tiny,Decrypt,16,273695
+10,AES-tinyCTR,Encrypt,16,30954
+10,AES-tinyCTR,Decrypt,16,30953
+10,AES-128,Encrypt,64,11574
+10,AES-128,Decrypt,64,11561
+10,SPECK-128,Encrypt,64,17425
+10,SPECK-128,Decrypt,64,15869
+10,LEA-128,Encrypt,64,16133
+10,LEA-128,Decrypt,64,16233
+10,ASCON-128,Encrypt,64,115321
+10,ASCON-128,Decrypt,64,116023
+10,AES-tiny,Encrypt,64,120830
+10,AES-tiny,Decrypt,64,1094497
+10,AES-tinyCTR,Encrypt,64,123457
+10,AES-tinyCTR,Decrypt,64,123456
+10,AES-128,Encrypt,256,46006
+10,AES-128,Decrypt,256,46037
+10,SPECK-128,Encrypt,256,69553
+10,SPECK-128,Decrypt,256,63329
+10,LEA-128,Encrypt,256,64385
+10,LEA-128,Decrypt,256,64785
+10,ASCON-128,Encrypt,256,346849
+10,ASCON-128,Decrypt,256,347863
+10,AES-tiny,Encrypt,256,482966
+10,AES-tiny,Decrypt,256,4377652
+10,AES-tinyCTR,Encrypt,256,493506
+10,AES-tinyCTR,Decrypt,256,493505
+10,AES-128,Encrypt,1024,183778
+10,AES-128,Decrypt,1024,183923
+10,SPECK-128,Encrypt,1024,278065
+10,SPECK-128,Decrypt,1024,253169
+10,LEA-128,Encrypt,1024,257393
+10,LEA-128,Decrypt,1024,258993
+10,ASCON-128,Encrypt,1024,1272961
+10,ASCON-128,Decrypt,1024,1275223
+10,AES-tiny,Encrypt,1024,1931535
+10,AES-tiny,Decrypt,1024,17510314
+10,AES-tinyCTR,Encrypt,1024,1973370
+10,AES-tinyCTR,Decrypt,1024,1973369
+------------------------
+
+=======================================================================
+| Algoritmus  | Muvelet   | Meret  | Median     | Min        | Max        | Elteres |
+=======================================================================
+| AES-128     | KeyGen    | 0      | 1513       | 1513       | 1513       |  0.00 % |
+| AES-128     | KeyGenDec | 0      | 6272       | 6272       | 6272       |  0.00 % |
+| SPECK-128   | KeyGen    | 0      | 3373       | 3373       | 3373       |  0.00 % |
+| LEA-128     | KeyGen    | 0      | 11303      | 11303      | 11303      |  0.00 % |
+| ASCON-128   | KeyGen    | 0      | 0          | 0          | 0          |  0.00 % |
+| AES-tiny    | KeyGen    | 0      | 6230       | 6230       | 6230       |  0.00 % |
+| AES-128     | Encrypt   | 16     | 2955       | 2955       | 2955       |  0.00 % |
+| AES-128     | Decrypt   | 16     | 2940       | 2940       | 2940       |  0.00 % |
+| SPECK-128   | Encrypt   | 16     | 4393       | 4393       | 4393       |  0.00 % |
+| SPECK-128   | Decrypt   | 16     | 4004       | 4004       | 4004       |  0.00 % |
+| LEA-128     | Encrypt   | 16     | 4070       | 4070       | 4070       |  0.00 % |
+| LEA-128     | Decrypt   | 16     | 4095       | 4095       | 4095       |  0.00 % |
+| ASCON-128   | Encrypt   | 16     | 57439      | 57439      | 57439      |  0.00 % |
+| ASCON-128   | Decrypt   | 16     | 58063      | 58063      | 58063      |  0.00 % |
+| AES-tiny    | Encrypt   | 16     | 30286      | 30286      | 30286      |  0.00 % |
+| AES-tiny    | Decrypt   | 16     | 273695     | 273695     | 273695     |  0.00 % |
+| AES-tinyCTR | Encrypt   | 16     | 30954      | 30954      | 30954      |  0.00 % |
+| AES-tinyCTR | Decrypt   | 16     | 30953      | 30953      | 30953      |  0.00 % |
+| AES-128     | Encrypt   | 64     | 11574      | 11574      | 11574      |  0.00 % |
+| AES-128     | Decrypt   | 64     | 11561      | 11561      | 11561      |  0.00 % |
+| SPECK-128   | Encrypt   | 64     | 17425      | 17425      | 17425      |  0.00 % |
+| SPECK-128   | Decrypt   | 64     | 15869      | 15869      | 15869      |  0.00 % |
+| LEA-128     | Encrypt   | 64     | 16133      | 16133      | 16133      |  0.00 % |
+| LEA-128     | Decrypt   | 64     | 16233      | 16233      | 16233      |  0.00 % |
+| ASCON-128   | Encrypt   | 64     | 115321     | 115321     | 115321     |  0.00 % |
+| ASCON-128   | Decrypt   | 64     | 116023     | 116023     | 116023     |  0.00 % |
+| AES-tiny    | Encrypt   | 64     | 120830     | 120830     | 120830     |  0.00 % |
+| AES-tiny    | Decrypt   | 64     | 1094497    | 1094497    | 1094497    |  0.00 % |
+| AES-tinyCTR | Encrypt   | 64     | 123457     | 123457     | 123457     |  0.00 % |
+| AES-tinyCTR | Decrypt   | 64     | 123456     | 123456     | 123456     |  0.00 % |
+| AES-128     | Encrypt   | 256    | 46006      | 46006      | 46006      |  0.00 % |
+| AES-128     | Decrypt   | 256    | 46037      | 46037      | 46037      |  0.00 % |
+| SPECK-128   | Encrypt   | 256    | 69553      | 69553      | 69553      |  0.00 % |
+| SPECK-128   | Decrypt   | 256    | 63329      | 63329      | 63329      |  0.00 % |
+| LEA-128     | Encrypt   | 256    | 64385      | 64385      | 64385      |  0.00 % |
+| LEA-128     | Decrypt   | 256    | 64785      | 64785      | 64785      |  0.00 % |
+| ASCON-128   | Encrypt   | 256    | 346849     | 346849     | 346849     |  0.00 % |
+| ASCON-128   | Decrypt   | 256    | 347863     | 347863     | 347863     |  0.00 % |
+| AES-tiny    | Encrypt   | 256    | 482966     | 482966     | 482966     |  0.00 % |
+| AES-tiny    | Decrypt   | 256    | 4377652    | 4377652    | 4377652    |  0.00 % |
+| AES-tinyCTR | Encrypt   | 256    | 493506     | 493506     | 493506     |  0.00 % |
+| AES-tinyCTR | Decrypt   | 256    | 493505     | 493505     | 493505     |  0.00 % |
+| AES-128     | Encrypt   | 1024   | 183778     | 183778     | 183778     |  0.00 % |
+| AES-128     | Decrypt   | 1024   | 183923     | 183923     | 183923     |  0.00 % |
+| SPECK-128   | Encrypt   | 1024   | 278065     | 278065     | 278065     |  0.00 % |
+| SPECK-128   | Decrypt   | 1024   | 253169     | 253169     | 253169     |  0.00 % |
+| LEA-128     | Encrypt   | 1024   | 257393     | 257393     | 257393     |  0.00 % |
+| LEA-128     | Decrypt   | 1024   | 258993     | 258993     | 258993     |  0.00 % |
+| ASCON-128   | Encrypt   | 1024   | 1272961    | 1272961    | 1272961    |  0.00 % |
+| ASCON-128   | Decrypt   | 1024   | 1275223    | 1275223    | 1275223    |  0.00 % |
+| AES-tiny    | Encrypt   | 1024   | 1931535    | 1931535    | 1931535    |  0.00 % |
+| AES-tiny    | Decrypt   | 1024   | 17510315   | 17510314   | 17510315   |  0.00 % |
+| AES-tinyCTR | Encrypt   | 1024   | 1973370    | 1973370    | 1973370    |  0.00 % |
+| AES-tinyCTR | Decrypt   | 1024   | 1973369    | 1973369    | 1973369    |  0.00 % |
+=======================================================================
+
+--- OSSZESITO CSV ---
+Algoritmus,Muvelet,Meret,Median,Min,Max
+AES-128,KeyGen,0,1513,1513,1513
+AES-128,KeyGenDec,0,6272,6272,6272
+SPECK-128,KeyGen,0,3373,3373,3373
+LEA-128,KeyGen,0,11303,11303,11303
+ASCON-128,KeyGen,0,0,0,0
+AES-tiny,KeyGen,0,6230,6230,6230
+AES-128,Encrypt,16,2955,2955,2955
+AES-128,Decrypt,16,2940,2940,2940
+SPECK-128,Encrypt,16,4393,4393,4393
+SPECK-128,Decrypt,16,4004,4004,4004
+LEA-128,Encrypt,16,4070,4070,4070
+LEA-128,Decrypt,16,4095,4095,4095
+ASCON-128,Encrypt,16,57439,57439,57439
+ASCON-128,Decrypt,16,58063,58063,58063
+AES-tiny,Encrypt,16,30286,30286,30286
+AES-tiny,Decrypt,16,273695,273695,273695
+AES-tinyCTR,Encrypt,16,30954,30954,30954
+AES-tinyCTR,Decrypt,16,30953,30953,30953
+AES-128,Encrypt,64,11574,11574,11574
+AES-128,Decrypt,64,11561,11561,11561
+SPECK-128,Encrypt,64,17425,17425,17425
+SPECK-128,Decrypt,64,15869,15869,15869
+LEA-128,Encrypt,64,16133,16133,16133
+LEA-128,Decrypt,64,16233,16233,16233
+ASCON-128,Encrypt,64,115321,115321,115321
+ASCON-128,Decrypt,64,116023,116023,116023
+AES-tiny,Encrypt,64,120830,120830,120830
+AES-tiny,Decrypt,64,1094497,1094497,1094497
+AES-tinyCTR,Encrypt,64,123457,123457,123457
+AES-tinyCTR,Decrypt,64,123456,123456,123456
+AES-128,Encrypt,256,46006,46006,46006
+AES-128,Decrypt,256,46037,46037,46037
+SPECK-128,Encrypt,256,69553,69553,69553
+SPECK-128,Decrypt,256,63329,63329,63329
+LEA-128,Encrypt,256,64385,64385,64385
+LEA-128,Decrypt,256,64785,64785,64785
+ASCON-128,Encrypt,256,346849,346849,346849
+ASCON-128,Decrypt,256,347863,347863,347863
+AES-tiny,Encrypt,256,482966,482966,482966
+AES-tiny,Decrypt,256,4377652,4377652,4377652
+AES-tinyCTR,Encrypt,256,493506,493506,493506
+AES-tinyCTR,Decrypt,256,493505,493505,493505
+AES-128,Encrypt,1024,183778,183778,183778
+AES-128,Decrypt,1024,183923,183923,183923
+SPECK-128,Encrypt,1024,278065,278065,278065
+SPECK-128,Decrypt,1024,253169,253169,253169
+LEA-128,Encrypt,1024,257393,257393,257393
+LEA-128,Decrypt,1024,258993,258993,258993
+ASCON-128,Encrypt,1024,1272961,1272961,1272961
+ASCON-128,Decrypt,1024,1275223,1275223,1275223
+AES-tiny,Encrypt,1024,1931535,1931535,1931535
+AES-tiny,Decrypt,1024,17510315,17510314,17510315
+AES-tinyCTR,Encrypt,1024,1973370,1973370,1973370
+AES-tinyCTR,Decrypt,1024,1973369,1973369,1973369
+---------------------
+
+Meres befejezve. Ujrainditashoz nyomd meg a RESET gombot a panelen.

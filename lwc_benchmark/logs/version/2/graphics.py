@@ -4,8 +4,13 @@ graphics.py - a szakdolgozat abrainak es osszesito tablazatanak eloallitasa
 ==========================================================================
 
 Bemenet: a Tera Term naplofajljai optimalizacios szintenkent (a mappaban):
-    meresuj-O0.*, meresuj-O2.*, meresuj-O3.*, meresuj-Ofast.*, meresuj-Os.*, meresuj-Oz.*
-    (barmilyen kiterjesztessel; a FAJLOK szotarban atirhato)
+    meres3-O0.*, meres3-O2.*, meres3-O3.*, meres3-Ofast.*, meres3-Os.*, meres3-Oz.*
+    (barmilyen kiterjesztessel; a FAJLOK szotarban atirhato),
+    valamint a memoria.py altal irt memoria.csv (a 7. abrahoz; ha nincs, kimarad).
+
+Algoritmusnevek a naplokban: AES-128 (a tervezok referenciakodja, rijndael.c),
+SPECK-128, LEA-128, ASCON-128, valamint kiegeszitokent AES-tiny es AES-tinyCTR
+(tiny-AES-c ECB es CTR modban).
 
 Minden naplobol az UTOLSO teljes futas CSV-sorait olvassa (a RESET elotti
 felbeszakadt indulasokat kihagyja), es meresenkent a 10 kor MEDIANJAT veszi.
@@ -18,7 +23,8 @@ Kimenet (az abrak/ mappaba):
     3_cpb_hoterkep.pdf/png - CPB minden optimalizacios szinten (hoterkep)
     4_relativ_O3.pdf/png   - koltseg az -O3-hoz viszonyitva (pontdiagram)
     5_kulcsgeneralas.pdf/png
-    6_ascon_vs_aes.pdf/png - az ASCON es az AES atfordulasi pontja (-O3)
+    6_ascon_vs_aes.pdf/png - az ASCON es az AES osszevetese rovid uzeneteken (-O3)
+    7_meret_sebesseg.pdf/png - kodmeret es fajlagos koltseg egyutt (szintenkent)
 
 A LaTeX-be a .pdf valtozatot erdemes betenni (vektoros, eles nyomtatasban).
 Futtatas:  python graphics.py
@@ -41,15 +47,16 @@ from matplotlib.ticker import FuncFormatter, LogLocator, NullFormatter
 F_CPU = 80_000_000          # Hz
 MAPPA = "."                 # ahol a naplok vannak
 KIMENET = "abrak"
+MEMORIA = "memoria.csv"     # a memoria.py kimenete (a MAPPA-ban)
 
 # szint -> naplofajl (elotag; a kiterjesztes mindegy)
 FAJLOK = {
-    "-O0":    "meresuj-O0",
-    "-O2":    "meresuj-O2",
-    "-O3":    "meresuj-O3",
-    "-Ofast": "meresuj-Ofast",
-    "-Os":    "meresuj-Os",
-    "-Oz":    "meresuj-Oz",
+    "-O0":    "meres3-O0",
+    "-O2":    "meres3-O2",
+    "-O3":    "meres3-O3",
+    "-Ofast": "meres3-Ofast",
+    "-Os":    "meres3-Os",
+    "-Oz":    "meres3-Oz",
 }
 # Cortex-M4-en a GCC -Os es -Oz mellett azonos kodot general (meresileg is
 # ciklusra azonos), ezert az abrakon egy oszlopkent szerepelnek.
@@ -60,23 +67,31 @@ MERETEK = [16, 64, 256, 1024]
 # Algoritmusok: megjelenitett nev, szin (validalt kategorikus paletta, fix
 # sorrend), jelolo es vonaltipus (masodlagos kodolas: szintevesztes, fekete-feher nyomtatas)
 ALGO = {
-    "AES-128":   dict(nev="AES-128 (ECB)", szin="#2a78d6", jelolo="o", vonal="-"),
-    "AES-CTR":   dict(nev="AES-128 (CTR)", szin="#2a78d6", jelolo="o", vonal="--"),
+    "AES-128":   dict(nev="AES-128",       szin="#2a78d6", jelolo="o", vonal="-"),
     "SPECK-128": dict(nev="SPECK-128",     szin="#eb6834", jelolo="s", vonal="-"),
     "LEA-128":   dict(nev="LEA-128",       szin="#1baf7a", jelolo="^", vonal="-"),
     "ASCON-128": dict(nev="ASCON-128",     szin="#eda100", jelolo="D", vonal="-"),
 }
+# Kiegeszito osszevetes: ugyanaz az AES-128 a tiny-AES-c implementacioval
+# (semleges szurke, hogy ne versenyezzen a negy fo algoritmus szineivel)
+KIEG = {
+    "AES-tiny":    dict(nev="AES-128 (tiny-AES-c)",      szin="#898781", jelolo="o", vonal=":"),
+    "AES-tinyCTR": dict(nev="AES-128 (tiny-AES-c, CTR)", szin="#898781", jelolo="o", vonal="--"),
+}
+MIND = {**ALGO, **KIEG}
 # Sorok a hoterkephez es a relativ abrahoz (algoritmus, muvelet, felirat)
 SOROK = [
-    ("AES-128",   "Encrypt", "AES-128 (ECB) titkosítás"),
-    ("AES-128",   "Decrypt", "AES-128 (ECB) visszafejtés"),
-    ("AES-CTR",   "Encrypt", "AES-128 (CTR) titk./visszaf."),
-    ("SPECK-128", "Encrypt", "SPECK-128 titkosítás"),
-    ("SPECK-128", "Decrypt", "SPECK-128 visszafejtés"),
-    ("LEA-128",   "Encrypt", "LEA-128 titkosítás"),
-    ("LEA-128",   "Decrypt", "LEA-128 visszafejtés"),
-    ("ASCON-128", "Encrypt", "ASCON-128 titkosítás"),
-    ("ASCON-128", "Decrypt", "ASCON-128 visszafejtés"),
+    ("AES-128",     "Encrypt", "AES-128 titkosítás"),
+    ("AES-128",     "Decrypt", "AES-128 visszafejtés"),
+    ("SPECK-128",   "Encrypt", "SPECK-128 titkosítás"),
+    ("SPECK-128",   "Decrypt", "SPECK-128 visszafejtés"),
+    ("LEA-128",     "Encrypt", "LEA-128 titkosítás"),
+    ("LEA-128",     "Decrypt", "LEA-128 visszafejtés"),
+    ("ASCON-128",   "Encrypt", "ASCON-128 titkosítás"),
+    ("ASCON-128",   "Decrypt", "ASCON-128 visszafejtés"),
+    ("AES-tiny",    "Encrypt", "tiny-AES-c titkosítás"),
+    ("AES-tiny",    "Decrypt", "tiny-AES-c visszafejtés"),
+    ("AES-tinyCTR", "Encrypt", "tiny-AES-c CTR (mindkét irány)"),
 ]
 
 # Diagram-"kronika": visszafogott racs es tengely, egyseges tinta
@@ -128,7 +143,7 @@ def hu_auto(x, _=None):
 # ---------------------------------------------------------------------------
 # Beolvasas
 # ---------------------------------------------------------------------------
-SOR = re.compile(r"^(\d+),([A-Z][A-Z0-9-]*),(\w+),(\d+),(\d+)\s*$")
+SOR = re.compile(r"^(\d+),([A-Za-z][A-Za-z0-9-]*),(\w+),(\d+),(\d+)\s*$")
 
 
 def beolvas(utvonal):
@@ -200,8 +215,6 @@ def abra_skalazodas(med, szint="-O3"):
     fig, ax = plt.subplots(figsize=(SZELES, 3.6))
     vegek = []
     for kulcs, st in ALGO.items():
-        if kulcs == "AES-CTR":      # gyakorlatilag egybeesik az ECB-vel (2. abra)
-            continue
         y = [med[szint][(kulcs, "Encrypt", m)] / F_CPU * 1000 for m in MERETEK]
         ax.plot(MERETEK, y, color=st["szin"], ls=st["vonal"], lw=2,
                 marker=st["jelolo"], ms=6, mfc=st["szin"], mec="white", mew=1.2, zorder=3)
@@ -230,7 +243,7 @@ def abra_skalazodas(med, szint="-O3"):
 # 2. Fajlagos koltseg 1024 B-on (-O3) - vizszintes csoportositott oszlopok
 # ---------------------------------------------------------------------------
 def abra_cpb(med, szint="-O3"):
-    algok = list(ALGO)
+    algok = list(ALGO) + ["AES-tiny"]
     fig, ax = plt.subplots(figsize=(SZELES, 3.2))
     h = 0.36
     for i, (muv, felirat, szin) in enumerate([("Encrypt", "titkosítás", KEK[5]),
@@ -240,7 +253,7 @@ def abra_cpb(med, szint="-O3"):
             y = j + (i - 0.5) * (h + 0.04)
             ax.barh(y, cpb, height=h, color=szin, label=felirat if j == 0 else None, zorder=3)
             ax.text(cpb + 6, y, hu(cpb), va="center", ha="left", fontsize=7.5, color=INK2)
-    ax.set_yticks(range(len(algok)), [ALGO[a]["nev"] for a in algok])
+    ax.set_yticks(range(len(algok)), [MIND[a]["nev"] for a in algok])
     ax.invert_yaxis()
     ax.set_xlabel(f"Fajlagos költség, ciklus/bájt (1024 B, {szint})")
     ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _: hu(x, 0)))
@@ -257,7 +270,7 @@ def abra_hoterkep(med):
     import numpy as np
     M = np.array([[med[s][(a, m, 1024)] / 1024 for s in SZINTEK_ABRA] for a, m, _ in SOROK])
     cmap = LinearSegmentedColormap.from_list("kek", KEK)
-    fig, ax = plt.subplots(figsize=(SZELES, 3.9))
+    fig, ax = plt.subplots(figsize=(SZELES, 4.6))
     im = ax.imshow(M, cmap=cmap, norm=LogNorm(vmin=M.min(), vmax=M.max()), aspect="auto")
     for i in range(M.shape[0]):
         legjobb = M[i, 1:].min()                  # a legjobb optimalizalt szint
@@ -291,7 +304,7 @@ def abra_hoterkep(med):
 # ---------------------------------------------------------------------------
 def abra_relativ(med, alap="-O3"):
     szintek = [("-O2", "o", KEK[2]), ("-Ofast", "|", INK2), ("-Os/-Oz", "D", KEK[6])]
-    fig, ax = plt.subplots(figsize=(SZELES, 3.6))
+    fig, ax = plt.subplots(figsize=(SZELES, 4.2))
     ax.axvline(100, color=INK2, lw=1, zorder=1)
     ax.text(100.8, -0.85, f"{alap} = 100 %", ha="left", va="center", fontsize=7.5, color=INK2)
     for i, (a, m, _) in enumerate(SOROK):
@@ -315,64 +328,141 @@ def abra_relativ(med, alap="-O3"):
 # 5. Kulcsgeneralas
 # ---------------------------------------------------------------------------
 def abra_kulcs(med):
-    algok = ["AES-128", "SPECK-128", "LEA-128"]
+    # (kulcs a medianban, felirat); az AES-nel a visszafejto kulcs kulon lepes
+    sorok = [(("AES-128", "KeyGen", 0),    "AES-128 (titkosító kulcs)"),
+             (("AES-128", "KeyGenDec", 0), "AES-128 (visszafejtő kulcs)"),
+             (("SPECK-128", "KeyGen", 0),  "SPECK-128"),
+             (("LEA-128", "KeyGen", 0),    "LEA-128"),
+             (("AES-tiny", "KeyGen", 0),   "AES-128 (tiny-AES-c)")]
+    sorok = [s for s in sorok if s[0] in med["-O3"]]
     szintek = [("-O0", KEK[1]), ("-O3", KEK[3]), ("-Os/-Oz", KEK[6])]
-    fig, ax = plt.subplots(figsize=(SZELES, 2.9))
+    fig, ax = plt.subplots(figsize=(SZELES, 0.6 + 0.62 * len(sorok)))
     h = 0.26
     for i, (s, szin) in enumerate(szintek):
-        for j, a in enumerate(algok):
-            v = med[s][(a, "KeyGen", 0)]
+        for j, (k, _) in enumerate(sorok):
+            v = med[s][k]
             y = j + (i - 1) * (h + 0.03)
             ax.barh(y, v, height=h, color=szin, label=s if j == 0 else None, zorder=3)
             ax.text(v + 120, y, hu(v, 0), va="center", fontsize=7.5, color=INK2)
-    ax.set_yticks(range(len(algok)), [ALGO[a]["nev"] for a in algok])
+    ax.set_yticks(range(len(sorok)), [f for _, f in sorok])
     ax.invert_yaxis()
     ax.set_xlabel("Kulcsgenerálás, órajelciklus")
     ax.xaxis.set_major_formatter(FuncFormatter(lambda x, _: hu(x, 0)))
     ax.grid(axis="y", visible=False)
-    ax.set_xlim(0, max(med["-O0"][(a, "KeyGen", 0)] for a in algok) * 1.12)
+    ax.set_xlim(0, max(med["-O0"][k] for k, _ in sorok) * 1.15)
     ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncols=3)
     # Az ASCON-128-nak nincs kulon kulcsgeneralasa -> ezt az abra LaTeX-felirata mondja ki
     ment(fig, "5_kulcsgeneralas")
 
 
 # ---------------------------------------------------------------------------
-# 6. ASCON vs AES: atfordulasi pont (-O3, linearis illesztes)
+# 6. ASCON vs AES rovid uzeneteken (-O3, linearis illesztes); az atfordulasi
+#    pontot csak akkor jeloli, ha a ket egyenes a 0-300 B tartomanyban metszi egymast
 # ---------------------------------------------------------------------------
+def illesztes(med, a, szint, muv="Encrypt"):
+    import numpy as np
+    y = [med[szint][(a, muv, m)] for m in MERETEK]
+    b, c = np.polyfit(MERETEK, y, 1)         # y = b*x + c
+    return b, c, y
+
+
+def atfordulas(med, a, szint, ref="ASCON-128"):
+    """Az a uzenetmeret (bajt), amely felett az ASCON olcsobb, mint az 'a' algoritmus
+    (None, ha a meresi tartomanyban nincs ilyen pont)."""
+    bA, cA, _ = illesztes(med, ref, szint)
+    b, c, _ = illesztes(med, a, szint)
+    if b <= bA:
+        return None
+    x = (cA - c) / (b - bA)
+    return x if x > 0 else 0.0
+
+
 def abra_atfordulas(med, szint="-O3"):
     import numpy as np
-    def illeszt(a):
-        y = [med[szint][(a, "Encrypt", m)] for m in MERETEK]
-        b, c = np.polyfit(MERETEK, y, 1)         # y = b*x + c
-        return b, c, y
     fig, ax = plt.subplots(figsize=(SZELES, 3.2))
     x = np.linspace(0, 300, 200)
-    eredmeny = {}
-    for a in ["AES-128", "AES-CTR", "ASCON-128"]:
-        b, c, y = illeszt(a)
-        eredmeny[a] = (b, c)
-        st = ALGO[a]
-        ax.plot(x, (b * x + c) / 1000, color=st["szin"], ls=st["vonal"], lw=1.5, zorder=2,
-                marker=st["jelolo"], ms=6, mec="white", mew=1.2, markevery=[], label=st["nev"])
+    for a in ["AES-128", "AES-tiny", "ASCON-128"]:
+        if (a, "Encrypt", 16) not in med[szint]:
+            continue
+        b, c, y = illesztes(med, a, szint)
+        st = MIND[a]
+        ax.plot(x, (b * x + c) / 1000, color=st["szin"], ls=st["vonal"], lw=1.5, zorder=2, label=st["nev"])
         pts = [(m, v) for m, v in zip(MERETEK, y) if m <= 300]
         ax.plot([p[0] for p in pts], [p[1] / 1000 for p in pts], ls="none", marker=st["jelolo"],
                 ms=6, color=st["szin"], mec="white", mew=1.2, zorder=3)
-    bA, cA = eredmeny["ASCON-128"]
-    bE, cE = eredmeny["AES-128"]
-    xs = (cA - cE) / (bE - bA)
-    ax.axvline(xs, color=INK2, lw=0.8, zorder=1)
-    ax.annotate(f"átfordulás ≈ {hu(xs, 0)} B\n(ASCON fix költsége ≈ {hu(cA, 0)} ciklus)",
-                (xs, (bE * xs + cE) / 1000), xytext=(xs + 25, (bE * xs + cE) / 1000 * 0.35),
-                fontsize=7.5, color=INK, arrowprops=dict(arrowstyle="-", color=INK2, lw=0.8))
+        if a != "ASCON-128":
+            xs = atfordulas(med, a, szint)
+            print(f"  {a}: {b:.1f} c/B + {c:.0f}; ASCON-nal atfordulas: "
+                  + (f"{xs:.1f} B" if xs is not None else "nincs (az ASCON minden meretnel dragabb)"))
+            if xs is not None and xs <= 300:
+                ax.axvline(xs, color=st["szin"], lw=0.8, ls=":", zorder=1)
+                ax.annotate(f"≈ {hu(xs, 0)} B", (xs, (b * xs + c) / 1000), xytext=(xs + 8, (b * xs + c) / 1000 * 0.45),
+                            fontsize=7.5, color=INK, arrowprops=dict(arrowstyle="-", color=INK2, lw=0.8))
+    bA, cA, _ = illesztes(med, "ASCON-128", szint)
+    print(f"  ASCON-128: fix koltseg {cA:.0f} ciklus, meredekseg {bA:.1f} c/B")
     ax.set_xlim(0, 300)
     ax.set_ylim(0)
     ax.set_xlabel("Üzenetméret (bájt)")
     ax.set_ylabel(f"Titkosítás, ezer ciklus ({szint})")
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: hu(v, 0)))
     ax.legend(loc="upper left")
-    print(f"  ASCON fix koltseg {cA:.0f} ciklus, meredekseg {bA:.1f} c/B; "
-          f"AES-ECB {bE:.1f} c/B; atfordulas {xs:.1f} B")
     ment(fig, "6_ascon_vs_aes")
+
+
+# ---------------------------------------------------------------------------
+# 7. Kodmeret es sebesseg egyutt: minden algoritmus negy szinten (-O0, -O2, -O3, -Os/-Oz)
+# ---------------------------------------------------------------------------
+def memoria_beolvas(ut):
+    adat = {}
+    with open(ut, newline="", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            adat[(r["szint"], r["algoritmus"])] = int(r["flash"])
+    return adat
+
+
+def abra_meret_sebesseg(med, mem, algok=None, nevek=None):
+    """Optimalizalt szintek (-O2, -O3, -Os/-Oz): x = flash-igeny, y = titkositasi CPB.
+    Az -O0-t kihagyja (fejlesztoi beallitas, a skalat torzitana); az egybeeso
+    pontok szintfeliratait osszevonja (pl. -O2/-O3)."""
+    algok = algok or [a for a in list(ALGO) + ["AES-tiny"] if ("-O3", a) in mem]
+    szintek = [("-O2", "-O2"), ("-O3", "-O3"), ("-Os", "-Os/-Oz")]
+    fig, ax = plt.subplots(figsize=(SZELES, 3.6))
+    for a in algok:
+        st = MIND[a]
+        pts = {}
+        for s, sm in szintek:
+            if (s, a) in mem:
+                xy = (mem[(s, a)], round(med[sm][(a, "Encrypt", 1024)] / 1024, 1))
+                pts.setdefault(xy, []).append(sm)
+        xs = [xy[0] for xy in pts]
+        ys = [xy[1] for xy in pts]
+        ax.plot(xs, ys, ls="none", marker=st["jelolo"], ms=7, color=st["szin"], mec="white", mew=1.2,
+                zorder=3, label=(nevek or {}).get(a, st["nev"]))
+        # a felirat alapesetben a pont jobb oldalan van; ha ugyanannak az algoritmusnak
+        # egy masik pontja kozel esik, a felso pont felirata fole, az alsoe ala kerul
+        import math
+        lista = list(pts.items())
+        for (x, y), lst in lista:
+            dy = (6, -3)
+            for (x2, y2), _ in lista:
+                if (x2, y2) == (x, y):
+                    continue
+                if abs(math.log10(x / x2)) < 0.15 and abs(math.log10(y / y2)) < 0.1:
+                    felso = (y > y2) or (y == y2 and x < x2)
+                    dy = (5, 5) if felso else (5, -11)
+            ax.annotate("/".join(lst).replace("-Os/-Oz", "-Os"), (x, y), xytext=dy,
+                        textcoords="offset points", fontsize=6.5, color=INK2)
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.xaxis.set_major_formatter(FuncFormatter(hu_auto))
+    ax.yaxis.set_major_formatter(FuncFormatter(hu_auto))
+    ax.yaxis.set_minor_formatter(FuncFormatter(hu_auto))
+    ax.tick_params(axis="y", which="minor", labelsize=7)
+    ax.set_xlabel("Flash-igény (bájt, log. skála)")
+    ax.set_ylabel("Titkosítás, ciklus/bájt\n(1024 B, log. skála)")
+    xl = ax.get_xlim(); ax.set_xlim(xl[0], xl[1] * 1.6)
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncols=len(algok))
+    ment(fig, "7_meret_sebesseg")
 
 
 if __name__ == "__main__":
@@ -386,4 +476,9 @@ if __name__ == "__main__":
     abra_relativ(med)
     abra_kulcs(med)
     abra_atfordulas(med)
+    memut = os.path.join(MAPPA, MEMORIA)
+    if os.path.exists(memut):
+        abra_meret_sebesseg(med, memoria_beolvas(memut))
+    else:
+        print("  (nincs memoria.csv - a 7. abra kimarad)")
     print("Kesz:", os.path.abspath(KIMENET))
